@@ -1,0 +1,7 @@
+# local
+.vim/
+__pycache__/
+*.pyc
+
+# build
+dist/

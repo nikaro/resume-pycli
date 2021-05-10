@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "resume-pycli"
+version = "1.0.0"
+description = "CLI tool to easily setup a new resume"
+authors = ["Nicolas Karolak <nicolas@karolak.fr>"]
+license = "GPL-3.0-or-later"
+keywords = ["resume", "json", "cli"]
+readme = "README.md"
+homepage = "https://sr.ht/~nka/resume-pycli"
+repository = "https://git.sr.ht/~nka/resume-pycli"
+include = [
+    "src/resume_pycli/resume.json",
+    "src/resume_pycli/schema.json",
+    "src/resume_pycli/themes/",
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+click = "^7.1.2"
+Jinja2 = "^2.11.3"
+pdfkit = "^0.6.1"
+jsonschema = "^3.2.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[tool.poetry.scripts]
+resume = 'resume_pycli.script:cli'
+resumepy = 'resume_pycli.script:cli'
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,18 @@
+---
+
+image: "archlinux"
+packages:
+  - "python-poetry"
+secrets:
+  - "8b542d0f-0a88-4407-8e8f-94a5a2cd8b75"
+tasks:
+  - test: |
+      cd resume-pycli/
+      make install
+      make test
+  - build: |
+      cd resume-pycli/
+      make build
+  - publish: |
+      cd resume-pycli/
+      make publish

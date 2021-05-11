@@ -16,6 +16,11 @@ build:
 test:
 	poetry run pytest
 
+.PHONY: publish
+## publish: Publish on PyPI
+publish:
+	poetry publish
+
 .PHONY: clean
 ## clean: Remove builds and cache
 clean:

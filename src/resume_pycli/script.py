@@ -57,12 +57,18 @@ def validate(resume, schema) -> None:
     type=click.File(),
 )
 @click.option("--theme", help="Specify the to used to build the resume.")
-def export(resume, theme) -> None:
+@click.option("--pdf", is_flag=True, help="Export to PDF only.")
+@click.option("--html", is_flag=True, help="Export to HTML only.")
+def export(resume, theme, pdf, html) -> None:
     """Export to HTML and PDF."""
     resume_file = json.load(resume)
     if not theme:
         theme = resume_file["meta"].get("theme", "base")
-    u.export(resume_file, theme)
+    Path("public").mkdir(parents=True, exist_ok=True)
+    if html or not pdf:
+        u.export_html(resume_file, theme)
+    if pdf or not html:
+        u.export_pdf(resume_file, theme)
 
 
 @click.command()

@@ -48,3 +48,25 @@ def test_export():
         assert result.exit_code == 0
         assert Path("public", "index.html").exists()
         assert Path("public", "index.pdf").exists()
+
+
+def test_export_pdf_only():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        resume = Path(resume_pycli.__file__).parent.joinpath("resume.json").read_text()
+        Path("resume.json").write_text(resume)
+        result = runner.invoke(cli, ["export", "--pdf"])
+        assert result.exit_code == 0
+        assert Path("public", "index.pdf").exists()
+        assert not Path("public", "index.html").exists()
+
+
+def test_export_html_only():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        resume = Path(resume_pycli.__file__).parent.joinpath("resume.json").read_text()
+        Path("resume.json").write_text(resume)
+        result = runner.invoke(cli, ["export", "--html"])
+        assert result.exit_code == 0
+        assert Path("public", "index.html").exists()
+        assert not Path("public", "index.pdf").exists()

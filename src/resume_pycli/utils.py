@@ -24,8 +24,7 @@ def validate(resume: dict, schema: dict) -> str:
         return ""
 
 
-def export(resume: dict, theme: str) -> None:
-    # render resume from template
+def render_html(resume: dict, theme: str) -> str:
     env = Environment(
         loader=ChoiceLoader(
             [
@@ -39,15 +38,20 @@ def export(resume: dict, theme: str) -> None:
     template = env.get_template("index.html")
     html = template.render(**resume)
 
-    # ensure output directory exists
-    Path("public").mkdir(parents=True, exist_ok=True)
+    return html
 
-    # export to output directory
+
+def export_html(resume: dict, theme: str) -> None:
+    html = render_html(resume, theme)
     if "image" in resume["basics"] and resume["basics"]["image"]:
         copy(resume["basics"]["image"], "public")
     Path("public", "index.html").write_text(html)
-    pdfkit.from_file(
-        str(Path("public", "index.html")),
+
+
+def export_pdf(resume: dict, theme: str) -> None:
+    html = render_html(resume, theme)
+    pdfkit.from_string(
+        html,
         str(Path("public", "index.pdf")),
     )
 

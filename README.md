@@ -1,5 +1,7 @@
 # resume-pycli
 
+[![builds.sr.ht status](https://builds.sr.ht/~nka/resume-pycli.svg)](https://builds.sr.ht/~nka/resume-pycli?)
+
 CLI tool to build a beautiful resume from a [JSON Resume](https://jsonresume.org/) file.
 
 This is a Python port of [resume-cli](https://github.com/jsonresume/resume-cli).

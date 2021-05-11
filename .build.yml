@@ -3,6 +3,7 @@
 image: "archlinux"
 packages:
   - "python-poetry"
+  - "wkhtmltopdf"
 secrets:
   - "8b542d0f-0a88-4407-8e8f-94a5a2cd8b75"
 tasks:

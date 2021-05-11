@@ -1,0 +1,6 @@
+{
+  "commitUrlFormat": "https://git.sr.ht/~nka/resume-pycli/commit/{{hash}}",
+  "compareUrlFormat": "https://git.sr.ht/~nka/resume-pycli/log/{{currentTag}}",
+  "issueUrlFormat": "https://todos.sr.ht/~nka/resume-pycli/{{id}}",
+  "userUrlFormat": "https://git.sr.ht/~nka"
+}

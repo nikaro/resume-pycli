@@ -2,6 +2,7 @@
 
 image: "archlinux"
 packages:
+  - "gtk3"
   - "python-poetry"
   - "wkhtmltopdf"
 secrets:
@@ -13,6 +14,7 @@ tasks:
       make test
   - build: |
       cd resume-pycli/
+      [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD)" ] && complete-build
       make build
   - publish: |
       cd resume-pycli/

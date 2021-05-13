@@ -1,10 +1,37 @@
 # resume-pycli
 
 [![builds.sr.ht status](https://builds.sr.ht/~nka/resume-pycli.svg)](https://builds.sr.ht/~nka/resume-pycli?)
+[![PyPI version](https://badge.fury.io/py/resume-pycli.svg)](https://badge.fury.io/py/resume-pycli)
 
 CLI tool to build a beautiful resume from a [JSON Resume](https://jsonresume.org/) file.
 
 This is a Python port of [resume-cli](https://github.com/jsonresume/resume-cli).
+
+## Installation
+
+With [pipx](https://pipxproject.github.io/pipx/):
+
+```
+pipx install resume-pycli
+```
+
+With [brew](https://brew.sh/):
+
+```
+brew install nikaro/tap/resume-pycli
+```
+
+On ArchLinux from the [AUR](https://aur.archlinux.org/packages/resume-pycli/):
+
+```
+yay -S resume-pycli
+
+# or without yay
+git clone https://aur.archlinux.org/resume-pycli.git
+cd resume-pycli/
+makepkg -si
+```
+
 
 ## Usage
 

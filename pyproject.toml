@@ -9,9 +9,6 @@ readme = "README.md"
 homepage = "https://sr.ht/~nka/resume-pycli"
 repository = "https://git.sr.ht/~nka/resume-pycli"
 include = [
-    "src/resume_pycli/resume.json",
-    "src/resume_pycli/schema.json",
-    "src/resume_pycli/themes/",
     "tests/",
 ]
 

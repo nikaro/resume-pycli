@@ -3,10 +3,8 @@
 import functools
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import (
-    ChoiceLoader,
     Environment,
     FileSystemLoader,
-    PackageLoader,
     select_autoescape,
 )
 import jsonschema
@@ -25,12 +23,12 @@ def validate(resume: dict, schema: dict) -> str:
 
 
 def render_html(resume: dict, theme: str) -> str:
+    lib_dir = Path(__file__).parent
     env = Environment(
-        loader=ChoiceLoader(
+        loader=FileSystemLoader(
             [
-                FileSystemLoader(f"themes/{theme}"),
-                PackageLoader("resume_pycli", f"themes/{theme}"),
-                PackageLoader("resume_pycli", f"themes/base"),
+                str(Path.cwd().joinpath("themes", theme)),
+                str(lib_dir.joinpath("themes", theme)),
             ]
         ),
         autoescape=select_autoescape(["html", "xml"]),

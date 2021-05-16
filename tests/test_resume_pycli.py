@@ -1,5 +1,6 @@
 from click.testing import CliRunner
 from pathlib import Path
+from shutil import copytree
 
 import resume_pycli
 from resume_pycli.script import cli
@@ -61,12 +62,18 @@ def test_export_pdf_only():
         assert not Path("public", "index.html").exists()
 
 
-def test_export_html_only():
+def test_export_custom_theme():
     runner = CliRunner()
     with runner.isolated_filesystem():
-        resume = Path(resume_pycli.__file__).parent.joinpath("resume.json").read_text()
+        lib_dir = Path(resume_pycli.__file__).parent
+        resume = lib_dir.joinpath("resume.json").read_text()
+        copytree(
+            lib_dir.joinpath("themes", "base"),
+            Path.cwd().joinpath("themes", "custom"),
+            dirs_exist_ok=True,
+        )
         Path("resume.json").write_text(resume)
-        result = runner.invoke(cli, ["export", "--html"])
+        result = runner.invoke(cli, ["export", "--theme", "custom"])
         assert result.exit_code == 0
         assert Path("public", "index.html").exists()
-        assert not Path("public", "index.pdf").exists()
+        assert Path("public", "index.pdf").exists()

@@ -21,7 +21,7 @@ tasks:
   - publish: |
       cd resume-pycli/
       # skip if already published version
-      poetry_version=$(poetry version | awk '{ print $2 }')
+      cli_version=$(poetry run resume version)
       pypi_version=$(curl -s https://pypi.org/pypi/resume-pycli/json | jq -r '.releases | keys[]' | sort | tail -n 1)
-      [ "$poetry_version" == "$pypi_version" ] && complete-build
+      [ "$cli_version" == "$pypi_version" ] && complete-build
       make publish

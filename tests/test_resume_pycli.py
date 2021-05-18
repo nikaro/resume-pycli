@@ -77,3 +77,15 @@ def test_export_custom_theme():
         assert result.exit_code == 0
         assert Path("public", "index.html").exists()
         assert Path("public", "index.pdf").exists()
+
+
+def test_export_stackoverflow_theme():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        lib_dir = Path(resume_pycli.__file__).parent
+        resume = lib_dir.joinpath("resume.json").read_text()
+        Path("resume.json").write_text(resume)
+        result = runner.invoke(cli, ["export", "--theme", "stackoverflow"])
+        assert result.exit_code == 0
+        assert Path("public", "index.html").exists()
+        assert Path("public", "index.pdf").exists()

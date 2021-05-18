@@ -2,6 +2,7 @@ from click.testing import CliRunner
 from pathlib import Path
 import re
 from shutil import copytree
+import toml
 
 import resume_pycli
 from resume_pycli.script import cli
@@ -13,6 +14,22 @@ def test_version():
         result = runner.invoke(cli, ["version"])
         assert result.exit_code == 0
         assert re.match(r"^(:?\d+)\.(:?\d+)\.(:?\d+)", result.output.strip())
+
+
+def test_version_match_pyproject():
+    pyproject = toml.load(Path(__file__).parent.parent.joinpath("pyproject.toml"))
+    major, minor, patch, pre, _ = re.match(
+        r"^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$",
+        pyproject["tool"]["poetry"]["version"],
+    ).groups()
+    pyproject_version = f"{major}.{minor}.{patch}"
+    if pre:
+        pyproject_version = f"{pyproject_version}{pre[:1]}{pre.split('.')[-1]}"
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        result = runner.invoke(cli, ["version"])
+        cli_version = result.output.strip()
+        assert cli_version == pyproject_version
 
 
 def test_init():

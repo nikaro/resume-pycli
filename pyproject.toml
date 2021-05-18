@@ -21,6 +21,7 @@ jsonschema = "^3.2.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
+toml = "^0.10.2"
 
 [tool.poetry.scripts]
 resume = 'resume_pycli.script:cli'

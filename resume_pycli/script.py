@@ -4,6 +4,7 @@ import click
 import json
 from pathlib import Path
 
+import resume_pycli
 import resume_pycli.utils as u
 
 
@@ -49,6 +50,18 @@ def validate(resume, schema) -> None:
         exit(1)
 
 
+
+@click.command()
+@click.option("--port", default=4000, help="Serve on a custom port.")
+@click.option("--dir", default="public", help="Serve a custom directory.")
+@click.option("--silent", is_flag=True, help="Do not open web browser.")
+def serve(port, dir, silent) -> None:
+    """Serve resume."""
+    click.echo(f"Serving on http://localhost:{port}/ ...")
+    if not silent:
+        click.launch(f"http://localhost:{port}/")
+    u.serve("localhost", port, dir)
+
 @click.command()
 @click.option(
     "--resume",
@@ -72,17 +85,12 @@ def export(resume, theme, pdf, html) -> None:
 
 
 @click.command()
-@click.option("--port", default=4000, help="Serve on a custom port.")
-@click.option("--dir", default="public", help="Serve a custom directory.")
-@click.option("--silent", is_flag=True, help="Do not open web browser.")
-def serve(port, dir, silent) -> None:
-    """Serve resume."""
-    click.echo(f"Serving on http://localhost:{port}/ ...")
-    if not silent:
-        click.launch(f"http://localhost:{port}/")
-    u.serve("localhost", port, dir)
+def version() -> None:
+    """Show application version."""
+    click.echo(resume_pycli.__version__)
 
 
+cli.add_command(version)
 cli.add_command(init)
 cli.add_command(validate)
 cli.add_command(export)

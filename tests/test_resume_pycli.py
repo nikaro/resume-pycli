@@ -1,9 +1,18 @@
 from click.testing import CliRunner
 from pathlib import Path
+import re
 from shutil import copytree
 
 import resume_pycli
 from resume_pycli.script import cli
+
+
+def test_version():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        result = runner.invoke(cli, ["version"])
+        assert result.exit_code == 0
+        assert re.match(r"^(:?\d+)\.(:?\d+)\.(:?\d+)", result.output.strip())
 
 
 def test_init():

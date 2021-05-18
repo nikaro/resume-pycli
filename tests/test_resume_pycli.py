@@ -1,4 +1,5 @@
 from click.testing import CliRunner
+import json
 from pathlib import Path
 import re
 from shutil import copytree
@@ -105,12 +106,46 @@ def test_export_custom_theme():
         assert Path("public", "index.pdf").exists()
 
 
+def test_export_with_image():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        lib_dir = Path(resume_pycli.__file__).parent
+        # create a dummy image and inject it into resume.json
+        image = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+        with open("image.jpg", "wb") as image_file:
+            image_file.write(image.encode())
+        resume = json.loads(lib_dir.joinpath("resume.json").read_text())
+        resume["basics"]["image"] = "image.jpg"
+        Path("resume.json").write_text(json.dumps(resume))
+        result = runner.invoke(cli, ["export"])
+        assert result.exit_code == 0
+        assert Path("public", "index.html").exists()
+        assert Path("public", "index.pdf").exists()
+
+
 def test_export_stackoverflow_theme():
     runner = CliRunner()
     with runner.isolated_filesystem():
         lib_dir = Path(resume_pycli.__file__).parent
         resume = lib_dir.joinpath("resume.json").read_text()
         Path("resume.json").write_text(resume)
+        result = runner.invoke(cli, ["export", "--theme", "stackoverflow"])
+        assert result.exit_code == 0
+        assert Path("public", "index.html").exists()
+        assert Path("public", "index.pdf").exists()
+
+
+def test_export_stackoverflow_theme_with_image():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        lib_dir = Path(resume_pycli.__file__).parent
+        # create a dummy image and inject it into resume.json
+        image = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+        with open("image.jpg", "wb") as image_file:
+            image_file.write(image.encode())
+        resume = json.loads(lib_dir.joinpath("resume.json").read_text())
+        resume["basics"]["image"] = "image.jpg"
+        Path("resume.json").write_text(json.dumps(resume))
         result = runner.invoke(cli, ["export", "--theme", "stackoverflow"])
         assert result.exit_code == 0
         assert Path("public", "index.html").exists()

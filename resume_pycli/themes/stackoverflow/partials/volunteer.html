@@ -1,0 +1,97 @@
+{% if volunteer %}
+<section class="section">
+  <header>
+    <h2 class='section-title'>Volunteer</h2>
+  </header>
+  <section id="volunteer">
+    {% for volunteer_item in volunteer %}
+    <section class="volunteer-item">
+      {% if volunteer_item['organization'] %}
+
+      {% if volunteer_item['summary'] %}
+        {% if volunteer_item['loop.first'] %}
+        <input id="volunteer-item-{{ loop.index }}" type="checkbox" class="toggle-item" checked="checked" />
+        {% else %}
+        <input id="volunteer-item-{{ loop.index }}" type="checkbox" class="toggle-item" />
+        {% endif %}
+        <label for="volunteer-item-{{ loop.index }}"></label>
+      {% endif %}    
+
+      <header class="clear">
+        <div class="header-left">
+          {% if volunteer_item['position'] %}
+          <div class="position">
+            {{ volunteer_item['position'] }}
+          </div>
+          {% endif %}
+          <div class="organization">
+            {{ volunteer_item['organization'] }}
+          </div>
+        </div>
+        <div class="date">
+          {% if volunteer_item['startDate'] %}
+          <span class="startDate">
+          {{ volunteer_item['startDate'] }}
+          </span>
+          {% endif %}
+          {% if volunteer_item['endDate'] %}
+          <span class="endDate">
+          - {{ volunteer_item['endDate'] }}
+          </span>
+          {% else %}
+          <span class="endDate">
+          - Current
+          </span>
+          {% endif %}
+        </div>
+      </header>
+      {% endif %}
+      {% if volunteer_item['url'] %}
+      <div class="website">
+        <a href="{{ volunteer_item['url'] }}">{{ volunteer_item['url'] }}</a>
+      </div>
+      {% endif %}
+      {% if volunteer_item['location'] %}
+      <span class="location">
+      <span class="fas fa-map-marker-alt"></span>
+      {% if volunteer_item['city'] %}
+      <span class="city">
+      {{ volunteer_item['city'] }},
+      </span>
+      {% endif %}
+      {% if volunteer_item['countryCode'] %}
+      <span class="countryCode">
+      ({{ volunteer_item['countryCode'] }})
+      </span>
+      {% endif %}
+      {% if volunteer_item['region'] %}
+      <span class="region">
+      {{ volunteer_item['region'] }}
+      </span>
+      {% endif %}
+      </span>
+      {% endif %}
+      {% if volunteer_item['keywords'] %}
+      <ul class="keywords">
+        {% for keyword in volunteer_item['keywords'] %}
+        <li>{{ keyword }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      <div class="item">
+        {% if volunteer_item['summary'] %}
+          <div class="summary">{{ volunteer_item['summary'] | replace("\r\n", "<br>") | replace("\n", "<br>") | replace("\r", "<br>") }}</div>
+        {% endif %}
+        {% if volunteer_item['highlights'] %}
+        <ul class="highlights">
+          {% for highlight in volunteer_item['highlights'] %}
+          <li>{{ highlight | replace("\r\n", "<br>") | replace("\n", "<br>") | replace("\r", "<br>") }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+    </section>
+    {% endfor %}
+  </section>
+</section>
+{% endif %}

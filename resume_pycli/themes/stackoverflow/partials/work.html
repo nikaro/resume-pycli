@@ -1,0 +1,80 @@
+{% if work %}
+<section class="section">
+  <header>
+    <h2 class='section-title'>Work Experience <span class="item-count">({{ work | length }})</span></h2>
+  </header>
+
+  <section id="work">
+    {% for work_item in work %}
+    <section class="work-item">
+      {% if work_item['name'] %}
+
+      {% if work_item['summary'] %}
+        {% if loop.first %}
+        <input id="work-item-{{ loop.index }}" type="checkbox" class="toggle-item" checked="checked" />
+        {% else %}
+        <input id="work-item-{{ loop.index }}" type="checkbox" class="toggle-item" />
+        {% endif %}
+        <label for="work-item-{{ loop.index }}"></label>
+      {% endif %}
+
+      <header class="clear">
+        {% if work_item['position'] %}
+          <div class="position">{{ work_item['position'] }}</div>
+        {% endif %}
+        <div class="company">{{ work_item['name'] }}</div>
+        <div class="date">
+          {% if work_item['startDate'] %}
+          <span class="startDate">{{ work_item['startDate'] }}</span>
+          {% endif %}
+          {% if work_item['endDate'] %}
+          <span class="endDate">- {{ work_item['endDate'] }}</span>
+          {% else %}
+          <span class="endDate">- Current</span>
+          {% endif %}
+        </div>
+      </header>
+      {% endif %}
+
+      {% if work_item['location'] %}
+      <span class="location">
+        <span class="fas fa-map-marker-alt"></span>
+        {% if work_item['city'] %}
+        <span class="city">{{ work_item['city'] }},</span>
+        {% endif %}
+        {% if work_item['countryCode'] %}
+        <span class="countryCode">({{ work_item['countryCode'] }})</span>
+        {% endif %}
+        {% if work_item['region'] %}
+        <span class="region">{{ work_item['region'] }}</span>
+        {% endif %}
+      </span>
+      {% endif %}
+
+      {% if work_item['url'] %}
+      <span class="website">
+        <a href="{{ work_item['url'] }}">{{ work_item['url'] }}</a>
+      </span> {% endif %} {% if work_item['keywords'] %}
+      <ul class="keywords">
+        {% for  keyword in  keywords %}
+        <li>{{ keyword }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      <div class="item" id="work-item">
+        {% if work_item['summary'] %}
+        <div class="summary">{{ work_item['summary'] | replace("\r\n", "<br>") | replace("\n", "<br>") | replace("\r", "<br>") }}</div>
+        {% endif %}
+        {% if work_item['highlights'] %}
+        <ul class="highlights">
+          {% for  highlight in work_item['highlights'] %}
+            <li>{{ highlight | replace("\r\n", "<br>") | replace("\n", "<br>") | replace("\r", "<br>") }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+    </section>
+    {% endfor %}
+  </section>
+</section>
+{% endif %}

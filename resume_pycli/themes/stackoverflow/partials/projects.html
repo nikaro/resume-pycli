@@ -1,0 +1,79 @@
+{% if projects %}
+<section class="section">
+  <header>
+    <h2 class='section-title'>Projects <span class="item-count">({{ projects | length }})</span></h2>
+  </header>
+  <section id="projects">
+    {% for project in projects %}
+    <section class="project-item">
+      {% if project['summary'] %}
+        {% if loop.first %}
+        <input id="project-item-{{ loop.index }}" type="checkbox" class="toggle-item" checked="checked" />
+        {% else %}
+        <input id="project-item-{{ loop.index }}" type="checkbox" class="toggle-item" />
+        {% endif %}
+        <label for="project-item-{{ loop.index }}"></label>
+      {% endif %}
+
+      {% if project['name'] %}
+      <header class="clear">
+        {% if project['name'] %}
+        <div class="position">{{ project['name'] }}</div>
+        {% endif %}
+        {% if project['startDate'] %}
+        <div class="date">
+          <span class="startDate">{{ project['startDate'] }}</span>
+          {% if project['endDate'] %}
+          <span class="endDate">- {{ project['endDate'] }}</span>
+          {% else %}
+          <span class="endDate">- Current</span>
+          {% endif %}
+        </div>
+        {% endif %}
+      </header>
+      {% endif %}
+      {% if project['location'] %}
+      <span class="location">
+      <span class="fas fa-map-marker-alt"></span>
+      {% if project['city'] %}
+      <span class="city">{{ project['city'] }},</span>
+      {% endif %}
+      {% if project['countryCode'] %}
+      <span class="countryCode">({{ project['countryCode'] }})</span>
+      {% endif %}
+      {% if project['region'] %}
+      <span class="region">
+      {{ project['region'] }}
+      </span>
+      {% endif %}
+      </span>
+      {% endif %}
+      {% if project['url'] %}
+      <span class="website">
+        <a href="{{ project['url'] }}">{{ project['url'] }}</a>
+      </span>
+      {% endif %}
+      {% if project['keywords'] %}
+      <ul class="keywords">
+        {% for keyword in project['keywords'] %}
+          <li>{{ keyword }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      <div class="item">
+        {% if project['summary'] %}
+          <div class="summary">{{ project['summary'] | replace("\r\n", "<br>") | replace("\n", "<br>") | replace("\r", "<br>") }}</div>
+        {% endif %}
+        {% if project['highlights'] %}
+        <ul class="highlights">
+          {% for  highlight in project['highlights'] %}
+            <li>{{ highlight | replace("\r\n", "<br>") | replace("\n", "<br>") | replace("\r", "<br>") }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+    </section>
+    {% endfor %}
+  </section>
+</section>
+{% endif %}

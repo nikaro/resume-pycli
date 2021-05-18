@@ -1,0 +1,60 @@
+{% if publications %}
+<section class="section">
+  <header>
+    <h2 class='section-title'>Publications</h2>
+  </header>
+  <section id="publications">
+    {% for publication in publications %}
+    <section class="publication-item">
+      {% if publication['summary'] %}
+        {% if loop.first %}
+        <input id="publication-item-{{ loop.index }}" type="checkbox" class="toggle-item" checked="checked" />
+        {% else %}
+        <input id="publication-item-{{ loop.index }}" type="checkbox" class="toggle-item" />
+        {% endif %}
+        <label for="publication-item-{{ loop.index }}"></label>
+      {% endif %}
+
+      <header class="clear">
+        <div class="header-left">
+          {% if publication['name'] %}
+          <span class="name">
+          {% if publication['url'] %}
+          <span class="website">
+          <a href="{{ publication['url'] }}">{{ publication['name'] }}</a>
+          </span>
+          {% else %}
+          {{ publication['name'] }}
+          {% endif %}
+          </span>
+          {% endif %}
+          {% if publication['publisher'] %}
+          <span class="publisher">
+          in {{ publication['publisher'] }}
+          </span>
+          {% endif %}
+        </div>
+        {% if publication['releaseDate'] %}
+        <span class="date">
+        {{ publication['releaseDate'] }}
+        </span>
+        {% endif %}
+      </header>
+      {% if publication['keywords'] %}
+      <ul class="keywords">
+        {% for keyword in publication['keywords'] %}
+        <li>{{ keyword }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <div class="item">  
+        {% if publication['summary'] %}
+          <div class="summary">{{ publication['summary'] | replace("\r\n", "<br>") | replace("\n", "<br>") | replace("\r", "<br>") }}</div>
+        {% endif %}
+      </div>
+    </section>
+    {% endfor %}
+  </section>
+</section>
+{% endif %}

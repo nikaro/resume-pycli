@@ -1,0 +1,91 @@
+ {% if basics %}
+	<header id="header" class="clear">
+		{% if basics["image"] %} 
+		<img class="image" src="data:image/jpeg;base64,{{ basics['image'] | safe }}" alt="{{ basics['name'] }}" />
+		<div class="middle">
+			<h1 class="name">{{ basics['name'] }}</h1>
+			<h2 class="label">{{ basics['label'] }}</h2>
+		</div>
+		{% else %}
+		<div>
+			<h1 class="name">{{ basics['name'] }}</h1>
+			<h2 class="label">{{ basics['label'] }}</h2>
+		</div>
+		{% endif %}
+
+		{% if basics["location"] %} 
+		<span class="location">
+			{% if basics["location"]["address"] %} 
+			<span class="address">{{ basics["location"]['address'] }},</span>
+			{% endif %}
+			{% if basics["location"]["postalCode"] %} 
+			<span class="postalCode">{{ basics["location"]['postalCode'] }},</span>
+			{% endif %}
+			{% if basics["location"]["city"] %} 
+			<span class="city">{{ basics["location"]['city'] }},</span>
+			{% endif %}
+			{% if basics["location"]["region"] %} 
+			<span class="region">{{ basics["location"]['region'] }}</span>
+			{% endif %}
+			{% if basics["location"]["countryCode"] %} 
+			<span class="countryCode">{{ basics["location"]['countryCode'] }}</span>
+			{% endif %}
+		</span>
+		{% endif %}
+
+		{% if basics["birth"] %}
+		{{ basics['birth'] }}
+		{% endif %}
+
+		<div id="contact">
+			{% if basics["url"] %} 
+			<div class="website">
+				<span class="fas fa-external-link-alt"></span>
+				<a href="{{ basics['url'] }}">{{ basics['url'] }}</a>
+			</div>
+			{% endif %}
+			{% if basics["email"] %} 
+			<div class="email">
+				<span class="far fa-envelope"></span>
+				<a href="mailto:{{ basics['email'] }}">{{ basics['email'] }}</a>
+			</div>
+			{% endif %}
+			{% if basics["phone"] %} 
+			<div class="phone">
+				<span class="fas fa-mobile-alt"></span>
+				<a href="tel:{{ basics['phone'] }}">{{ basics['phone'] }}</a>
+			</div>
+			{% endif %}
+		</div>
+
+		{% if basics["profiles"] %} 
+		<div id="profiles">
+			{% for  profile in basics["profiles"] %}
+			<div class="item">
+				{% if profile["network"] %} 
+				<div class="username">
+					<span class="fab fa-{{ profile['icon'] | d(profile['network']) | replace(' ', '-') | lower }} {{ profile['network'] | replace(' ', '-') | lower }} social"></span>
+					{% if profile["url"] %} 
+					<span class="url">
+						<a href="{{ profile['url'] }}">{{ profile['username'] }}</a>
+					</span>
+					{% else %}
+					<span>{{ profile['username'] }}</span>
+					{% endif %}
+				</div>
+				{% endif %}
+			</div>
+			{% endfor %}
+		</div>
+		{% endif %}
+	</header>
+
+	{% if basics["summary"] %} 
+	<section class="section">
+		<section class="main-summary">
+			<div>{{ basics["summary"] | replace("\r\n", "<br>") | replace("\n", "<br>") | replace("\r", "<br>") }}</div>
+		</section>
+	</section>
+	{% endif %}
+
+{% endif %}

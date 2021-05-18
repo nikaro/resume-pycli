@@ -1,0 +1,47 @@
+{% if awards %}
+<section class="section">
+  <header>
+    <h2 class='section-title'>Awards</h2>
+  </header>
+  <section id="awards">
+    {% for award in awards %}
+    <section class="award-item">
+      {% if award['summary'] %}
+        {% if loop.first %}
+        <input id="award-item-{{ loop.index }}" type="checkbox" class="toggle-item" checked="checked" />
+        {% else %}
+        <input id="award-item-{{ loop.index }}" type="checkbox" class="toggle-item" />
+        {% endif %}
+        <label for="award-item-{{ loop.index }}"></label>
+      {% endif %}
+
+      <header class="clear">
+        <div class="header-left">
+          {% if award['title'] %}
+          <div class="title">
+            {{ award['title'] }}
+          </div>
+          {% endif %}
+          {% if award['awarder'] %}
+          <div class="awarder">
+            {{ award['awarder'] }}
+          </div>
+          {% endif %}
+        </div>
+        {% if award['date'] %}
+        <div class="date">
+          {{ award['date'] }}
+        </div>
+        {% endif %}
+      </header>
+      
+      <div class="item">
+        {% if award['summary'] %}
+          <div class="summary">{{ award['summary'] | replace("\r\n", "<br>") | replace("\n", "<br>") | replace("\r", "<br>") }}</div>
+        {% endif %}
+      </div>
+    </section>
+    {% endfor %}
+  </section>
+</section>
+{% endif %}

@@ -3,6 +3,7 @@
 image: "archlinux"
 packages:
   - "gtk3"
+  - "jq"
   - "python-poetry"
   - "wkhtmltopdf"
 secrets:

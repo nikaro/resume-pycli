@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import base64
 import functools
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import (
@@ -10,7 +11,6 @@ from jinja2 import (
 import jsonschema
 from pathlib import Path
 import pdfkit
-from shutil import copy
 
 
 def validate(resume: dict, schema: dict) -> str:
@@ -40,9 +40,10 @@ def render_html(resume: dict, theme: str) -> str:
 
 
 def export_html(resume: dict, theme: str) -> None:
-    html = render_html(resume, theme)
     if "image" in resume["basics"] and resume["basics"]["image"]:
-        copy(resume["basics"]["image"], "public")
+        with open(resume["basics"]["image"], "rb") as image_file:
+            resume["basics"]["image"] = base64.b64encode(image_file.read()).decode()
+    html = render_html(resume, theme)
     Path("public", "index.html").write_text(html)
 
 

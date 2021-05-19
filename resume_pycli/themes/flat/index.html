@@ -1,0 +1,410 @@
+<!doctype html>
+<html>
+    <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+
+    <title>{{ basics.name }}</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/2.0.2/octicons.min.css">
+
+    <style type="text/css">
+        {% include 'style.css' %}
+    </style>
+
+    </head>
+    <body>
+
+    <header id="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-9 col-sm-push-3">
+                    <h1>
+                        {{ basics.name }}
+                    </h1>
+                    <h2>
+                        {{ basics.label }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div id="content" class="container">
+
+    <section id="about" class="row">
+        <aside class="col-sm-3">
+            <h3>About</h3>
+        </aside>
+        <div class="col-sm-9">
+            <p>{{ basics.summary }}</p>
+        </div>
+    </section>
+
+    <section id="contact" class="row">
+        <aside class="col-sm-3">
+            <h3>Contact</h3>
+        </aside>
+        <div class="col-sm-9">
+            <div class="row">
+            <div class="col-sm-6">
+                <strong>Email</strong>
+                <div><a href="mailto:{{ basics.email }}">{{ basics.email }}</a></div>
+            </div>
+            <div class="col-sm-6">
+                <strong>Phone</strong>
+                <div class="phone"><a href="tel:{{ basics.phone }}">{{ basics.phone }}</a></div>
+            </div>
+            <div class="col-sm-6">
+                <strong>Website</strong>
+                <div class="website">
+                    <a href="{{ basics.url }}">{{ basics.url }}</a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    {% if basics.profiles %}
+    <section id="profiles" class="row">
+        <aside class="col-sm-3">
+            <h3>Profiles</h3>
+        </aside>
+        <div class="col-sm-9">
+            <div class="row">
+                {% for profile in basics.profiles %}
+                <div class="col-sm-6">
+                    <strong class="network">
+                        {{ profile.network }}
+                    </strong>
+                    {% if profile.username is defined %}
+                    <div class="username">
+                        {% if profile.url is defined %}
+                        <div class="url">
+                            <a href="{{ profile.url }}">{{ profile.username }}</a>
+                        </div>
+                        {% else %}
+                            {{ profile.username }}
+                        {% endif %}
+                    </div>
+                    {% else %}
+                        {% if profile.url is defined %}
+                        <div class="url">
+                            <a href="{{ profile.url }}">{{ profile.url }}</a>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if work %}
+    <section id="work" class="row">
+        <aside class="col-sm-3">
+            <h3>Work</h3>
+        </aside>
+        <div class="col-sm-9">
+            <div class="row">
+                {% for item in work %}
+                <div class="col-sm-12">
+                    <h4 class="strike-through">
+                        <span>{{ item.name }}</span>
+                        <span class="date">
+                            {{ item.startDate }} — {{ item.endDate }}
+                        </span>
+                    </h4>
+                    <div class="website pull-right">
+                        <a href="{{ item.url }}">{{ item.url }}</a>
+                    </div>
+                    <div class="position">
+                        {{ item.position }}
+                    </div>
+                    <div class="summary">
+                        <p>{{ item.summary }}</p>
+                    </div>
+                    {% if item.highlights %}
+                    <h5>Highlights</h5>
+                    <ul class="highlights">
+                        {% for highlight in item.highlights %}
+                        <li class="bullet">{{ highlight }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if volunteer %}
+    <section id="volunteer" class="row">
+        <aside class="col-sm-3">
+            <h3>Volunteer</h3>
+        </aside>
+        <div class="col-sm-9">
+            <div class="row">
+                {% for item in volunteer %}
+                <div class="col-sm-12">
+                    <h4 class="strike-through">
+                        <span>{{ item.organization }}</span>
+                        <span class="date">
+                            {{ item.startDate }} — {{ item.endDate }}
+                        </span>
+                    </h4>
+                    <div class="website pull-right">
+                        <a href="{{ item.website }}">{{ item.website }}</a>
+                    </div>
+                    <div class="position">
+                        {{ item.position }}
+                    </div>
+                    <div class="summary">
+                        <p>{{ item.summary }}</p>
+                    </div>
+                    {% if item.highlights %}
+                    <h5>Highlights</h5>
+                    <ul class="highlights">
+                        {% for highlight in item.highlights %}
+                        <li class="bullet">{{ highlight }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if education %}
+    <section id="education" class="row">
+        <aside class="col-sm-3">
+            <h3>Education</h3>
+        </aside>
+        <div class="col-sm-9">
+            <div class="row">
+                {% for item in education %}
+                <div class="col-sm-12">
+                    <h4 class="strike-through">
+                        <span>{{ item.institution }}</span>
+                        <span class="date">
+                            {{ item.startDate }} — {{ item.endDate }}
+                        </span>
+                    </h4>
+                    <div class="area">
+                        {{ item.area }}
+                    </div>
+                    <div class="studyType">
+                        {{ item.studyType }}
+                    </div>
+                    {% if item.courses %}
+                    <h5>Courses</h5>
+                    <ul class="courses">
+                        {% for course in item.courses %}
+                        <li>{{ course }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if awards %}
+    <section id="awards" class="row">
+        <aside class="col-sm-3">
+            <h3>Awards</h3>
+        </aside>
+        <div class="col-sm-9">
+            <div class="row">
+                {% for award in awards %}
+                <div class="col-sm-12">
+                    <h4 class="strike-through">
+                        <span>{{ award.date }}</span>
+                    </h4>
+                    <div class="date pull-right">
+                        <em>Awarded</em>
+                        {{ award.date }}
+                    </div>
+                    <div class="awarder">
+                        <em>by</em>
+                        <strong>{{ award.awarder }}</strong>
+                    </div>
+                    <div class="summary">
+                        {{ award.summary }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if publications %}
+    <section id="publications" class="row">
+        <aside class="col-sm-3">
+            <h3>Publications</h3>
+        </aside>
+        <div class="col-sm-9">
+            <div class="row">
+                {% for publication in publications %}
+                <div class="col-sm-12">
+                    <h4 class="strike-through">
+                        <span>{{ publication.name }}</span>
+                        <span class="date">
+                            {{ publication.releaseDate }}
+                        </span>
+                    </h4>
+                    <div class="website pull-right">
+                        <a href="{{ publication.url }}"></a>
+                    </div>
+                    <div class="publisher">
+                        <em>Published by</em>
+                        <strong>{{ publication.publisher }}</strong>
+                    </div>
+                    <div class="summary">
+                        <p>{{ publication.summary }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if skills %}
+    <section id="skills" class="row">
+        <aside class="col-sm-3">
+            <h3>Skills</h3>
+        </aside>
+        <div class="col-sm-9">
+            <div class="row">
+            {% for skill in skills %}
+            <div class="col-sm-6">
+                <div class="name">
+                    <h4>{{ skill.name }}</h4>
+                </div>
+                {% if skill.keywords %}
+                <ul class="keywords">
+                    {% for keyword in skill.keywords %}
+                    <li>{{ keyword }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if projects %}
+    <section id="projects" class="row">
+        <aside class="col-sm-3">
+            <h3>Projects</h3>
+        </aside>
+        <div class="col-sm-9">
+            <div class="row">
+            {% for project in projects %}
+            <div class="col-sm-12">
+                <div class="name">
+                    <h4>{{ project.name }}</h4>
+                </div>
+                {% if project.keywords %}
+                <p class="keywords small">#{{ project.keywords | join(' #') | lower }}</p>
+                {% endif %}
+                <div class="summary">
+                    <p>{{ project.description }}</p>
+                </div>
+                {% if "url" in project %}
+                <div class="website">
+                    <a href="{{ project.url }}">{{ project.url }}</a>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if languages %}
+    <section id="languages" class="row">
+        <aside class="col-sm-3">
+            <h3>Languages</h3>
+        </aside>
+        <div class="col-sm-9">
+            <div class="row">
+                {% for language in languages %}
+                <div class="col-sm-6">
+                    <div class="language">
+                        <strong>{{ language.language }}</strong>
+                    </div>
+                    <div class="fluency">
+                        {{ language.fluencyDisplay | d(language.fluency) }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if interests %}
+    <section id="interests" class="row">
+        <aside class="col-sm-3">
+            <h3>Interests</h3>
+        </aside>
+        <div class="col-sm-9">
+            <div class="row">
+                {% for interest in interests %}
+                <div class="col-sm-6">
+                    <div class="name">
+                        <h4>{{ interest.name }}</h4>
+                    </div>
+                    {% if interest.keywords %}
+                    <ul class="keywords">
+                        {% for keyword in interest.keywords %}
+                        <li>{{ keyword }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if references %}
+    <section id="references" class="row">
+        <aside class="col-sm-3">
+            <h3>References</h3>
+        </aside>
+        <div class="col-sm-9">
+            <div class="row">
+                {% for reference in references %}
+                <div class="col-sm-12">
+                    <blockquote class="reference">
+                        <p>{{ reference.reference }}</p>
+                        <p class="name">
+                            <strong>— {{ reference.name }}</strong>
+                        </p>
+                    </blockquote>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    </div>
+
+    </body>
+</html>

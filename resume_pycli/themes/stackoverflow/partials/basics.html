@@ -64,7 +64,7 @@
 			<div class="item">
 				{% if profile["network"] %} 
 				<div class="username">
-					<span class="fab fa-{{ profile['icon'] | d(profile['network']) | replace(' ', '-') | lower }} {{ profile['network'] | replace(' ', '-') | lower }} social"></span>
+					<span class="{{ profile['icon'] | d('fab fa-' + profile['network'] | replace(' ', '-') | lower) }} {{ profile['network'] | replace(' ', '-') | lower }} social"></span>
 					{% if profile["url"] %} 
 					<span class="url">
 						<a href="{{ profile['url'] }}">{{ profile['username'] }}</a>

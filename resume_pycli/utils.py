@@ -48,10 +48,14 @@ def export_html(resume: dict, theme: str) -> None:
 
 
 def export_pdf(resume: dict, theme: str) -> None:
+    options = {
+        "quiet": "",
+    }
     html = render_html(resume, theme)
     pdfkit.from_string(
         html,
         str(Path("public", "index.pdf")),
+        options=options,
     )
 
 

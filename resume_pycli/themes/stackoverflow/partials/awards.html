@@ -6,7 +6,7 @@
   <section id="awards">
     {% for award in awards %}
     <section class="award-item">
-      {% if award['summary'] %}
+      {% if award.summary %}
         {% if loop.first %}
         <input id="award-item-{{ loop.index }}" type="checkbox" class="toggle-item" checked="checked" />
         {% else %}
@@ -17,27 +17,27 @@
 
       <header class="clear">
         <div class="header-left">
-          {% if award['title'] %}
+          {% if award.title %}
           <div class="title">
-            {{ award['title'] }}
+            {{ award.title }}
           </div>
           {% endif %}
-          {% if award['awarder'] %}
+          {% if award.awarder %}
           <div class="awarder">
-            {{ award['awarder'] }}
+            {{ award.awarder }}
           </div>
           {% endif %}
         </div>
-        {% if award['date'] %}
+        {% if award.date %}
         <div class="date">
-          {{ award['date'] }}
+          {{ award.date }}
         </div>
         {% endif %}
       </header>
-      
+
       <div class="item">
-        {% if award['summary'] %}
-          <div class="summary">{{ award['summary'] | replace("\r\n", "<br>") | replace("\n", "<br>") | replace("\r", "<br>") }}</div>
+        {% if award.summary %}
+          <div class="summary">{{ award.summary | replace("\r\n", "<br>") | replace("\n", "<br>") | replace("\r", "<br>") }}</div>
         {% endif %}
       </div>
     </section>

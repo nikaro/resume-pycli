@@ -6,23 +6,23 @@
 	<section id="skills">
 		{% for skill in  skills %}
 		<div class="item">
-			{% if skill['name'] %}
+			{% if skill.name %}
 			<h3 class="name">
-				{{ skill['name'] }}
+				{{ skill.name }}
 			</h3>
-			{% endif %} {% if skill['level'] %}
-			<div class="level {{ skill['level'] | lower }}">
-				{% if skill['levelDisplay'] %}
-				<em>{{ skill['levelDisplay'] }}</em>
+			{% endif %} {% if skill.level %}
+			<div class="level {{ skill.level | lower }}">
+				{% if skill.levelDisplay %}
+				<em>{{ skill.levelDisplay }}</em>
 				{% else %}
-				<em>{{ skill['level'] }}</em>
+				<em>{{ skill.level }}</em>
 				{% endif %}
 				<div class="bar"></div>
 			</div>
 			{% endif %}
-			{% if skill['keywords'] %}
+			{% if skill.keywords %}
 			<ul class="keywords">
-				{% for keyword in skill['keywords'] %}
+				{% for keyword in skill.keywords %}
 				<li>{{ keyword }}</li>
 				{% endfor %}
 			</ul>

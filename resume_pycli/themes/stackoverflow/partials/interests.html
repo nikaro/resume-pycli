@@ -6,20 +6,20 @@
   <section id="interests">
     {% for interest in interests %}
     <div class="item">
-      {% if interest['name'] %}
+      {% if interest.name %}
       <h3 class="name">
-        {{ interest['name'] }}
+        {{ interest.name }}
       </h3>
       {% endif %}
-      {% if interest['keywords'] %}
+      {% if interest.keywords %}
       <ul class="keywords">
-        {% for keyword in interest['keywords'] %}
+        {% for keyword in interest.keywords %}
         <li>{{ keyword }}</li>
         {% endfor %}
       </ul>
       {% endif %}
-      {% if interest['summary'] %}
-        <div class="summary">{{ interest['summary'] | replace("\r\n", "<br>") | replace("\n", "<br>") | replace("\r", "<br>") }}</div>
+      {% if interest.summary %}
+        <div class="summary">{{ interest.summary | replace("\r\n", "<br>") | replace("\n", "<br>") | replace("\r", "<br>") }}</div>
       {% endif %}
     </div>
     {% endfor %}

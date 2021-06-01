@@ -6,18 +6,18 @@
   <section id="languages">
     {% for language in languages %}
     <div class="display">
-      {% if language['language'] %}
+      {% if language.language %}
       <h3 class="language">
-        {{ language['language'] }}
+        {{ language.language }}
       </h3>
       {% endif %}
       <div class="item">
-        {% if language['fluency'] %}
-        <div class="level fluency {{ language['fluency'] | lower }}">
-          {% if language['fluencyDisplay'] %}
-          <em>{{ language['fluencyDisplay'] }}</em>
+        {% if language.fluency %}
+        <div class="level fluency {{ language.fluency | lower }}">
+          {% if language.fluencyDisplay %}
+          <em>{{ language.fluencyDisplay }}</em>
           {% else %}
-          <em>{{ language['fluency'] }}</em>
+          <em>{{ language.fluency }}</em>
           {% endif %}
           <div class="bar"></div>
         </div>

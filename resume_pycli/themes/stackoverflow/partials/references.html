@@ -6,14 +6,14 @@
   <section id="references">
     {% for reference in references %}
     <div class="item">
-      {% if reference['reference'] %}
+      {% if reference.reference %}
       <blockquote class="reference">
-        &#8220;&#32;{{ reference['reference'] }}&#32;&#8221;
+        &#8220;&#32;{{ reference.reference }}&#32;&#8221;
       </blockquote>
       {% endif %}
-      {% if reference['name'] %}
+      {% if reference.name %}
       <div class="name">
-        {{ reference['name'] }}
+        {{ reference.name }}
       </div>
       {% endif %}
     </div>

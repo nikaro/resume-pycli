@@ -7,7 +7,7 @@
   <section id="education">
     {% for education_item in education %}
     <section class="education-item">
-      {% if education_item['summary'] %}
+      {% if education_item.summary %}
         {% if loop.first %}
         <input id="education-item-{{ loop.index }}" type="checkbox" class="toggle-item" checked="checked" />
         {% else %}
@@ -17,31 +17,31 @@
       {% endif %}
       <header class="clear">
         <div class="header-left">
-          {% if education_item['studyType'] %}
+          {% if education_item.studyType %}
           <div class="studyType">
-            {{ education_item['studyType'] }}
+            {{ education_item.studyType }}
           </div>
           {% endif %}
-          {% if education_item['area'] %}
+          {% if education_item.area %}
           <div class="area">
-            {{ education_item['area'] }}
+            {{ education_item.area }}
           </div>
           {% endif %}
-          {% if education_item['institution'] %}
+          {% if education_item.institution %}
           <div class="institution">
-            {{ education_item['institution'] }}
+            {{ education_item.institution }}
           </div>
           {% endif %}
         </div>
         <div class="date">
-          {% if education_item['startDate'] %}
+          {% if education_item.startDate %}
           <span class="startDate">
-          {{ education_item['startDate'] }}
+          {{ education_item.startDate }}
           </span>
           {% endif %}
-          {% if education_item['endDate'] %}
+          {% if education_item.endDate %}
           <span class="endDate">
-          - {{ education_item['endDate'] }}
+          - {{ education_item.endDate }}
           </span>
           {% else %}
           <span class="endDate">
@@ -51,37 +51,37 @@
         </div>
       </header>
 
-      {% if education_item['location'] %}
+      {% if education_item.location %}
       <span class="location">
         <span class="fas fa-map-marker-alt"></span>
-        {% if education_item['city'] %}
-        <span class="city">{{ education_item['city'] }}, </span>
+        {% if education_item.city %}
+        <span class="city">{{ education_item.city }}, </span>
         {% endif %}
-        {% if education_item['countryCode'] %}
-        <span class="countryCode">({{ education_item['countryCode'] }})</span>
+        {% if education_item.countryCode %}
+        <span class="countryCode">({{ education_item.countryCode }})</span>
         {% endif %}
-        {% if education_item['region'] %}
-        <span class="region">{{ education_item['region'] }}</span>
+        {% if education_item.region %}
+        <span class="region">{{ education_item.region }}</span>
         {% endif %}
       </span>
       {% endif %}
 
-      {% if education_item['courses'] %}
+      {% if education_item.courses %}
       <ul class="courses">
-        {% for course in education_item['courses'] %}
+        {% for course in education_item.courses %}
         <li>{{ course }}</li>
         {% endfor %}
       </ul>
       {% endif %}
 
       <div class="item">
-        {% if education_item['score'] %}
+        {% if education_item.score %}
         <div class='gpa'>
-          <strong> Grade:</strong> <span>{{ education_item['score'] }}</span>
+          <strong> Grade:</strong> <span>{{ education_item.score }}</span>
         </div>
         {% endif %}
-        {% if education_item['summary'] %}
-          <div class="summary">{{ education_item['summary'] | replace("\r\n", "<br>") | replace("\n", "<br>") | replace("\r", "<br>") }}</div>
+        {% if education_item.summary %}
+          <div class="summary">{{ education_item.summary | replace("\r\n", "<br>") | replace("\n", "<br>") | replace("\r", "<br>") }}</div>
         {% endif %}
       </div>
     </section>

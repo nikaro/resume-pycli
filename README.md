@@ -60,6 +60,7 @@ Commands:
   init      Initialize a resume.json file.
   serve     Serve resume.
   validate  Validate resume's schema.
+  version   Show application version.
 ```
 
 Export your resume with a custom theme, for exemple one located in
@@ -79,11 +80,10 @@ resume export --resume resume.short.json --pdf
 ## Themes
 
 You can put your theme in `themes/<name>` next to your `resume.json` file. It
-uses [Jinja2](https://jinja2docs.readthedocs.io/en/stable/) as templating
-engine. Take a look at the [small
-demo](https://git.sr.ht/~nka/resume-pycli/tree/main/item/src/resume_pycli/themes/base/)
+uses [Jinja](https://jinja.palletsprojects.com/en/3.0.x/) as templating engine.
+Take a look at the [included
+themes](https://git.sr.ht/~nka/resume-pycli/tree/main/item/src/resume_pycli/themes/base/)
 that you can take as example to write your own.
 
-It is not compatible with ["official" community
-themes](https://jsonresume.org/themes/) and at the moment i have not included a
-beautiful one.
+Since it uses Jinja, it is not compatible with ["official" community
+themes](https://jsonresume.org/themes/).

@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
-import click
 import json
 from pathlib import Path
+import sys
+
+import click
 
 import resume_pycli
 import resume_pycli.utils as u
@@ -11,7 +13,6 @@ import resume_pycli.utils as u
 @click.group()
 def cli() -> None:
     """CLI tool to easily setup a new resume."""
-    pass
 
 
 @click.command()
@@ -47,20 +48,20 @@ def validate(resume, schema) -> None:
     err = u.validate(resume_file, schema_file)
     if err:
         click.echo(err, err=True)
-        exit(1)
-
+        sys.exit(1)
 
 
 @click.command()
 @click.option("--port", default=4000, help="Serve on a custom port.")
-@click.option("--dir", default="public", help="Serve a custom directory.")
+@click.option("--path", default="public", help="Serve a custom directory.")
 @click.option("--silent", is_flag=True, help="Do not open web browser.")
-def serve(port, dir, silent) -> None:
+def serve(port, path, silent) -> None:
     """Serve resume."""
     click.echo(f"Serving on http://localhost:{port}/ ...")
     if not silent:
         click.launch(f"http://localhost:{port}/")
-    u.serve("localhost", port, dir)
+    u.serve("localhost", port, path)
+
 
 @click.command()
 @click.option(

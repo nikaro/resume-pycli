@@ -4,13 +4,14 @@ import ast
 from base64 import b64encode
 import functools
 from http.server import HTTPServer, SimpleHTTPRequestHandler
+from pathlib import Path
+
 from jinja2 import (
     Environment,
     FileSystemLoader,
     select_autoescape,
 )
 import jsonschema
-from pathlib import Path
 import pdfkit
 
 
@@ -67,8 +68,6 @@ def export_pdf(resume: dict, theme: str, pdf_options: dict) -> None:
 
 def serve(address: str, port: int, path: str) -> None:
     server_address = (address, port)
-    ResumeHTTPRequestHandler = functools.partial(
-        SimpleHTTPRequestHandler, directory=path
-    )
-    httpd = HTTPServer(server_address, ResumeHTTPRequestHandler)
+    resume_handler = functools.partial(SimpleHTTPRequestHandler, directory=path)
+    httpd = HTTPServer(server_address, resume_handler)
     httpd.serve_forever()

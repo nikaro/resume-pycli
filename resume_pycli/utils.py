@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import base64
+import ast
+from base64 import b64encode
 import functools
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import (
@@ -42,15 +43,20 @@ def render_html(resume: dict, theme: str) -> str:
 def export_html(resume: dict, theme: str) -> None:
     if "image" in resume["basics"] and resume["basics"]["image"]:
         with open(resume["basics"]["image"], "rb") as image_file:
-            resume["basics"]["image"] = base64.b64encode(image_file.read()).decode()
+            resume["basics"]["image"] = b64encode(image_file.read()).decode()
     html = render_html(resume, theme)
     Path("public", "index.html").write_text(html)
 
 
-def export_pdf(resume: dict, theme: str) -> None:
+def cb_pdf_options(ctx, params, value) -> dict:
+    return ast.literal_eval(value)
+
+
+def export_pdf(resume: dict, theme: str, pdf_options: dict) -> None:
     options = {
         "quiet": "",
     }
+    options.update(pdf_options)
     html = render_html(resume, theme)
     pdfkit.from_string(
         html,

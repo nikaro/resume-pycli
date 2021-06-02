@@ -71,8 +71,14 @@ def serve(port, dir, silent) -> None:
 )
 @click.option("--theme", help="Specify the to used to build the resume.")
 @click.option("--pdf", is_flag=True, help="Export to PDF only.")
+@click.option(
+    "--pdf-options",
+    help='Pass options as quoted Python dict to wkhtmltopdf (ex: \'{"page-size": "A4"}\').',
+    default="{}",
+    callback=u.cb_pdf_options,
+)
 @click.option("--html", is_flag=True, help="Export to HTML only.")
-def export(resume, theme, pdf, html) -> None:
+def export(resume, theme, pdf, pdf_options, html) -> None:
     """Export to HTML and PDF."""
     resume_file = json.load(resume)
     if not theme:
@@ -81,7 +87,7 @@ def export(resume, theme, pdf, html) -> None:
     if html or not pdf:
         u.export_html(resume_file, theme)
     if pdf or not html:
-        u.export_pdf(resume_file, theme)
+        u.export_pdf(resume_file, theme, pdf_options)
 
 
 @click.command()

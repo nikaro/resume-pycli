@@ -1,9 +1,9 @@
 .PHONY: all
 all:
 
-.PHONY: install
-## install: Install requirements
-install:
+.PHONY: setup
+## setup: Install requirements
+setup:
 	poetry install
 
 .PHONY: build

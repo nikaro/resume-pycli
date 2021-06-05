@@ -11,7 +11,7 @@ secrets:
 tasks:
   - test: |
       cd resume-pycli/
-      make install
+      make setup
       make test
   - build: |
       cd resume-pycli/

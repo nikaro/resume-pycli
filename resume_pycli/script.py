@@ -79,16 +79,17 @@ def serve(port, path, silent) -> None:
     callback=u.cb_pdf_options,
 )
 @click.option("--html", is_flag=True, help="Export to HTML only.")
-def export(resume, theme, pdf, pdf_options, html) -> None:
+@click.option("--output", help="Specify the output directory.", default="public")
+def export(resume, theme, pdf, pdf_options, html, output) -> None:
     """Export to HTML and PDF."""
     resume_file = json.load(resume)
     if not theme:
         theme = resume_file["meta"].get("theme", "base")
     Path("public").mkdir(parents=True, exist_ok=True)
     if html or not pdf:
-        u.export_html(resume_file, theme)
+        u.export_html(resume_file, theme, output)
     if pdf or not html:
-        u.export_pdf(resume_file, theme, pdf_options)
+        u.export_pdf(resume_file, theme, output, pdf_options)
 
 
 @click.command()

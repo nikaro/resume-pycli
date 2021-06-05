@@ -5,6 +5,9 @@ from base64 import b64encode
 import functools
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
+import socket
+from tempfile import TemporaryDirectory
+import threading
 
 from jinja2 import (
     Environment,
@@ -40,28 +43,41 @@ def render_html(resume: dict, theme: str) -> str:
 
     return html
 
-
-def export_html(resume: dict, theme: str) -> None:
+def export_html(resume: dict, theme: str, output: str) -> None:
     if "image" in resume["basics"] and resume["basics"]["image"]:
         with open(resume["basics"]["image"], "rb") as image_file:
-            resume["basics"]["image"] = b64encode(image_file.read()).decode()
+            resume["basics"]["image_b64"] = b64encode(image_file.read()).decode()
     html = render_html(resume, theme)
-    Path("public", "index.html").write_text(html)
+    Path(output, "index.html").write_text(html)
 
 
 def cb_pdf_options(ctx, params, value) -> dict:
     return ast.literal_eval(value)
 
 
-def export_pdf(resume: dict, theme: str, pdf_options: dict) -> None:
+def check_port(port: int) -> bool:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        return s.connect_ex(("localhost", port)) == 0
+
+
+def export_pdf(resume: dict, theme: str, output: str, pdf_options: dict) -> None:
+    # export html in a random temporary directory
+    tmpdir = TemporaryDirectory()
+    export_html(resume, theme, tmpdir.name)
+    # increment port if already in use
+    port = 4001
+    while check_port(port):
+        port += 1
+    # run server in background
+    daemon = threading.Thread(target=serve, args=("localhost", port, tmpdir.name), daemon=True)
+    daemon.start()
     options = {
         "quiet": "",
     }
     options.update(pdf_options)
-    html = render_html(resume, theme)
-    pdfkit.from_string(
-        html,
-        str(Path("public", "index.pdf")),
+    pdfkit.from_url(
+        f"http://localhost:{port}",
+        str(Path(output, "index.pdf")),
         options=options,
     )
 

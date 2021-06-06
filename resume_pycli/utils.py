@@ -99,7 +99,7 @@ def export_pdf(resume: dict, theme: str, output: str, pdf_options: dict) -> None
         port += 1
     # run server in background
     daemon = threading.Thread(
-        target=serve, args=("localhost", port, tmpdir.name), daemon=True
+        target=serve, args=("localhost", port, tmpdir.name, True), daemon=True
     )
     daemon.start()
     options = {
@@ -113,8 +113,14 @@ def export_pdf(resume: dict, theme: str, output: str, pdf_options: dict) -> None
     )
 
 
-def serve(address: str, port: int, path: str) -> None:
+class SilentHandler(SimpleHTTPRequestHandler):
+    def log_message(self, *_):
+        pass
+
+
+def serve(address: str, port: int, path: str, silent: bool) -> None:
     server_address = (address, port)
-    resume_handler = functools.partial(SimpleHTTPRequestHandler, directory=path)
+    handler = SilentHandler if silent else SimpleHTTPRequestHandler
+    resume_handler = functools.partial(handler, directory=path)
     httpd = HTTPServer(server_address, resume_handler)
     httpd.serve_forever()

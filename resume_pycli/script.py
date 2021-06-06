@@ -60,7 +60,7 @@ def serve(port, path, silent) -> None:
     click.echo(f"Serving on http://localhost:{port}/ ...")
     if not silent:
         click.launch(f"http://localhost:{port}/")
-    u.serve("localhost", port, path)
+    u.serve("localhost", port, path, silent)
 
 
 @click.command()

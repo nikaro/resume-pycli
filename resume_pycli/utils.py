@@ -2,9 +2,11 @@
 
 import ast
 from base64 import b64encode
+from bs4 import BeautifulSoup
 import functools
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
+from shutil import copytree
 import socket
 from tempfile import TemporaryDirectory
 import threading
@@ -43,12 +45,40 @@ def render_html(resume: dict, theme: str) -> str:
 
     return html
 
+
 def export_html(resume: dict, theme: str, output: str) -> None:
     if "image" in resume["basics"] and resume["basics"]["image"]:
         with open(resume["basics"]["image"], "rb") as image_file:
             resume["basics"]["image_b64"] = b64encode(image_file.read()).decode()
     html = render_html(resume, theme)
     Path(output, "index.html").write_text(html)
+    # find theme directory
+    if (cwd_theme := Path.cwd().joinpath("themes", theme)).is_dir():
+        theme_dir = cwd_theme
+    elif (lib_theme := Path(__file__).parent.joinpath("themes", theme)).is_dir():
+        theme_dir = lib_theme
+    else:
+        raise Exception("cannot find theme")
+    # copy theme assets in output directory
+    soup = BeautifulSoup(html, "html.parser")
+    assets = [
+        link.get("href").split("/")[1]
+        for link in soup.find_all("link")
+        if link.get("href").startswith("/")
+    ]
+    assets += [
+        script.get("src").split("/")[1]
+        for script in soup.find_all("script")
+        if script.get("src").startswith("/")
+    ]
+    assets = set(assets)
+    for asset in assets:
+        print(f"{theme_dir}/{asset}")
+        copytree(
+            Path.joinpath(theme_dir, asset),
+            Path(output).joinpath(asset),
+            dirs_exist_ok=True,
+        )
 
 
 def cb_pdf_options(ctx, params, value) -> dict:
@@ -69,7 +99,9 @@ def export_pdf(resume: dict, theme: str, output: str, pdf_options: dict) -> None
     while check_port(port):
         port += 1
     # run server in background
-    daemon = threading.Thread(target=serve, args=("localhost", port, tmpdir.name), daemon=True)
+    daemon = threading.Thread(
+        target=serve, args=("localhost", port, tmpdir.name), daemon=True
+    )
     daemon.start()
     options = {
         "quiet": "",

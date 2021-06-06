@@ -146,6 +146,7 @@ def test_export_stackoverflow_theme():
         assert result.exit_code == 0
         assert Path("public", "index.html").exists()
         assert Path("public", "index.pdf").exists()
+        assert Path("public", "assets").is_dir()
 
 
 def test_export_stackoverflow_theme_with_image():
@@ -163,3 +164,4 @@ def test_export_stackoverflow_theme_with_image():
         assert result.exit_code == 0
         assert Path("public", "index.html").exists()
         assert Path("public", "index.pdf").exists()
+        assert Path("public", "assets").is_dir()

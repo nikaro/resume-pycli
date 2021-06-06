@@ -4,5 +4,10 @@ __pycache__/
 *.pyc
 
 # build
-dist/
-public/
+/dist/
+
+# tests
+/public/
+/themes/
+/resume.json
+/schema.json

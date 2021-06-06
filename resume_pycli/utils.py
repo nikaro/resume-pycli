@@ -73,7 +73,6 @@ def export_html(resume: dict, theme: str, output: str) -> None:
     ]
     assets = set(assets)
     for asset in assets:
-        print(f"{theme_dir}/{asset}")
         copytree(
             Path.joinpath(theme_dir, asset),
             Path(output).joinpath(asset),

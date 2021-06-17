@@ -6,6 +6,11 @@ all:
 setup:
 	poetry install
 
+.PHONY: chglog
+## chglog: Generate changelog
+chglog:
+	git chglog --sort semver -o CHANGELOG.md
+
 .PHONY: build
 ## build: Build package
 build:

@@ -1,17 +1,23 @@
 ---
 
-image: "archlinux"
+image: "alpine/edge"
 packages:
-  - "gtk3"
   - "jq"
-  - "python-poetry"
+  - "py3-pip"
+  - "py3-cryptography"
   - "wkhtmltopdf"
+  - "xorg-server"
 secrets:
   - "8b542d0f-0a88-4407-8e8f-94a5a2cd8b75"
+environment:
+  PATH: "/home/build/.local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 tasks:
-  - test: |
+  - setup: |
+      python3 -m pip install poetry
       cd resume-pycli/
       make setup
+  - test: |
+      cd resume-pycli/
       make test
   - build: |
       cd resume-pycli/

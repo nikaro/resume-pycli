@@ -1,0 +1,24 @@
+---
+
+version: "3"
+
+services:
+  app:
+    build:
+      context: ".."
+      dockerfile: ".devcontainer/Dockerfile"
+    user: "code"
+    volumes:
+      # workspace
+      - "..:/workspace"
+      # dotfiles
+      - "$HOME/.vim:/home/code/.vim"
+      - "$HOME/.vimrc:/home/code/.vimrc"
+      - "$HOME/.config/git:/home/code/.config/git"
+      - "$HOME/.ssh:/home/code/.ssh"
+      - "$HOME/.gnupg:/home/code/.gnupg"
+      - "$SSH_AUTH_SOCK:/ssh-agent"
+    environment:
+      - "SSH_AUTH_SOCK=/ssh-agent"
+    ports:
+      - "4000:4000"

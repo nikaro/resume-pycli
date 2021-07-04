@@ -10,7 +10,7 @@ services:
     user: "code"
     volumes:
       # workspace
-      - "..:/workspace"
+      - "$PWD:/workspace"
       # dotfiles
       - "$HOME/.vim:/home/code/.vim"
       - "$HOME/.vimrc:/home/code/.vimrc"

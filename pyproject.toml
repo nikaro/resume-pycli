@@ -6,8 +6,8 @@ authors = ["Nicolas Karolak <nicolas@karolak.fr>"]
 license = "GPL-3.0-or-later"
 keywords = ["resume", "json", "cli"]
 readme = "README.md"
-homepage = "https://sr.ht/~nka/resume-pycli"
-repository = "https://git.sr.ht/~nka/resume-pycli"
+homepage = "https://github.com/nikaro/resume-pycli"
+repository = "https://github.com/nikaro/resume-pycli"
 include = [
     "tests/",
 ]

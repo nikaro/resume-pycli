@@ -6,7 +6,6 @@ Resume](https://jsonresume.org/) file.
 This is a Python port of
 [resume-cli](https://github.com/jsonresume/resume-cli).
 
-[![builds.sr.ht status](https://builds.sr.ht/~nka/resume-pycli.svg)](https://builds.sr.ht/~nka/resume-pycli)
 [![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/pypi/resume-pycli)](https://libraries.io/pypi/resume-pycli)
 [![PyPI Version](https://img.shields.io/pypi/v/resume-pycli?color=4DC71F&logo=python&logoColor=fff)](https://pypi.org/project/resume-pycli/)
 [![AUR Version](https://img.shields.io/aur/version/resume-pycli?logo=linux&logoColor=fff)](https://aur.archlinux.org/packages/resume-pycli/)
@@ -82,7 +81,7 @@ resume export --resume resume.short.json --pdf
 You can put your theme in `themes/<name>` next to your `resume.json` file. It
 uses [Jinja](https://jinja.palletsprojects.com/en/3.0.x/) as templating engine.
 Take a look at the [included
-themes](https://git.sr.ht/~nka/resume-pycli/tree/main/item/src/resume_pycli/themes/base/)
+themes](https://github.com/nikaro/resume-pycli/tree/main/resume_pycli/themes/base)
 that you can take as example to write your own.
 
 Since it uses Jinja, it is not compatible with ["official" community

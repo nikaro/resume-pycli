@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import re
 from shutil import copytree
-import toml
+import tomli
 
 import resume_pycli
 from resume_pycli.script import cli
@@ -18,7 +18,8 @@ def test_version():
 
 
 def test_version_match_pyproject():
-    pyproject = toml.load(Path(__file__).parent.parent.joinpath("pyproject.toml"))
+    with Path(__file__).parent.parent.joinpath("pyproject.toml").open(mode="rb") as f:
+        pyproject = tomli.load(f)
     major, minor, patch, pre, _ = re.match(
         r"^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$",
         pyproject["tool"]["poetry"]["version"],

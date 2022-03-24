@@ -1,6 +1,24 @@
 ## Unreleased
 
 
+## v2.0.0 - 2022-03-24
+
+### Build
+
+- update deps versions and set min python to 3.7
+
+
+## v1.3.4 - 2021-07-04
+
+### Build
+
+- set min python version to 3.6
+
+### Features
+
+- add flag to pass bind address for serve command
+
+
 ## v1.3.3 - 2021-06-06
 
 ### Bug Fixes

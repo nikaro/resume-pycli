@@ -90,19 +90,6 @@ def test_export_pdf_only():
         assert not Path("public", "index.html").exists()
 
 
-def test_export_pdf_options():
-    runner = CliRunner()
-    with runner.isolated_filesystem():
-        resume = Path(resume_pycli.__file__).parent.joinpath("resume.json").read_text()
-        Path("resume.json").write_text(resume)
-        result = runner.invoke(
-            cli, ["export", "--pdf", "--pdf-options", "{'page-size': 'A4'}"]
-        )
-        assert result.exit_code == 0
-        assert Path("public", "index.pdf").exists()
-        assert not Path("public", "index.html").exists()
-
-
 def test_export_custom_theme():
     runner = CliRunner()
     with runner.isolated_filesystem():

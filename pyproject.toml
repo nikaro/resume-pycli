@@ -16,9 +16,9 @@ include = [
 python = "^3.7"
 click = "*"
 Jinja2 = "*"
-pdfkit = "*"
 jsonschema = "*"
 beautifulsoup4 = "*"
+weasyprint = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
@@ -26,6 +26,9 @@ pytest = "*"
 [tool.poetry.scripts]
 resume = 'resume_pycli.script:cli'
 resumepy = 'resume_pycli.script:cli'
+
+[tool.poetry.group.dev.dependencies]
+tomli = "^2.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

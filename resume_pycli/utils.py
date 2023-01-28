@@ -17,7 +17,7 @@ from jinja2 import (
     select_autoescape,
 )
 import jsonschema
-import pdfkit
+from weasyprint import HTML
 
 
 def validate(resume: dict, schema: dict) -> str:
@@ -80,16 +80,12 @@ def export_html(resume: dict, theme: str, output: str) -> None:
         )
 
 
-def cb_pdf_options(ctx, params, value) -> dict:
-    return ast.literal_eval(value)
-
-
 def check_port(port: int) -> bool:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         return s.connect_ex(("localhost", port)) == 0
 
 
-def export_pdf(resume: dict, theme: str, output: str, pdf_options: dict) -> None:
+def export_pdf(resume: dict, theme: str, output: str) -> None:
     # export html in a random temporary directory
     tmpdir = TemporaryDirectory()
     export_html(resume, theme, tmpdir.name)
@@ -102,15 +98,7 @@ def export_pdf(resume: dict, theme: str, output: str, pdf_options: dict) -> None
         target=serve, args=("localhost", port, tmpdir.name, True), daemon=True
     )
     daemon.start()
-    options = {
-        "quiet": "",
-    }
-    options.update(pdf_options)
-    pdfkit.from_url(
-        f"http://localhost:{port}",
-        str(Path(output, "index.pdf")),
-        options=options,
-    )
+    HTML(url=f"http://localhost:{port}").write_pdf(target=str(Path(output, "index.pdf")))
 
 
 class SilentHandler(SimpleHTTPRequestHandler):

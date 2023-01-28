@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import ast
 from base64 import b64encode
 from bs4 import BeautifulSoup
 import functools
@@ -8,6 +7,7 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 from shutil import copytree
 import socket
+import subprocess
 from tempfile import TemporaryDirectory
 import threading
 
@@ -17,7 +17,7 @@ from jinja2 import (
     select_autoescape,
 )
 import jsonschema
-import pdfkit
+from playwright.sync_api import sync_playwright
 
 
 def validate(resume: dict, schema: dict) -> str:
@@ -80,16 +80,12 @@ def export_html(resume: dict, theme: str, output: str) -> None:
         )
 
 
-def cb_pdf_options(ctx, params, value) -> dict:
-    return ast.literal_eval(value)
-
-
 def check_port(port: int) -> bool:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         return s.connect_ex(("localhost", port)) == 0
 
 
-def export_pdf(resume: dict, theme: str, output: str, pdf_options: dict) -> None:
+def export_pdf(resume: dict, theme: str, output: str) -> None:
     # export html in a random temporary directory
     tmpdir = TemporaryDirectory()
     export_html(resume, theme, tmpdir.name)
@@ -102,15 +98,17 @@ def export_pdf(resume: dict, theme: str, output: str, pdf_options: dict) -> None
         target=serve, args=("localhost", port, tmpdir.name, True), daemon=True
     )
     daemon.start()
-    options = {
-        "quiet": "",
-    }
-    options.update(pdf_options)
-    pdfkit.from_url(
-        f"http://localhost:{port}",
-        str(Path(output, "index.pdf")),
-        options=options,
-    )
+    with sync_playwright() as p:
+        chromium = p.chromium
+        if not Path(chromium.executable_path).exists():
+            subprocess.run(
+                ["playwright", "install", "--with-deps", "chromium"], check=True
+            )
+        browser = chromium.launch()
+        page = browser.new_page()
+        page.goto(url=f"http://localhost:{port}")
+        page.pdf(path=str(Path(output, "index.pdf")), format="A4")
+        browser.close()
 
 
 class SilentHandler(SimpleHTTPRequestHandler):

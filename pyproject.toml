@@ -16,11 +16,12 @@ include = [
 python = "^3.8"
 click = "*"
 Jinja2 = "*"
-pdfkit = "*"
 jsonschema = "*"
 beautifulsoup4 = "*"
+playwright = "*"
 
 [tool.poetry.group.dev.dependencies]
+tomli = "*"
 pytest = "*"
 mypy = "*"
 ruff = "*"

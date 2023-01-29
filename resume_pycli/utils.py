@@ -101,9 +101,7 @@ def export_pdf(resume: dict, theme: str, output: str) -> None:
     with sync_playwright() as p:
         chromium = p.chromium
         if not Path(chromium.executable_path).exists():
-            subprocess.run(
-                ["playwright", "install", "--with-deps", "chromium"], check=True
-            )
+            subprocess.run(["playwright", "install", "chromium"], check=True)
         browser = chromium.launch()
         page = browser.new_page()
         page.goto(url=f"http://localhost:{port}")

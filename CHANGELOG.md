@@ -1,5 +1,8 @@
 ## Unreleased
 
+
+## v3.0.0 - 2023-01-29
+
 ### Build
 
 - python 3.8 minimum version

@@ -8,7 +8,6 @@ This is a Python port of
 
 [![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/pypi/resume-pycli)](https://libraries.io/pypi/resume-pycli)
 [![PyPI Version](https://img.shields.io/pypi/v/resume-pycli?color=4DC71F&logo=python&logoColor=fff)](https://pypi.org/project/resume-pycli/)
-[![AUR Version](https://img.shields.io/aur/version/resume-pycli?logo=linux&logoColor=fff)](https://aur.archlinux.org/packages/resume-pycli/)
 
 ## Features
 
@@ -25,23 +24,6 @@ With [pipx](https://pipxproject.github.io/pipx/):
 
 ```
 pipx install resume-pycli
-```
-
-With [brew](https://brew.sh/):
-
-```
-brew install nikaro/tap/resume-pycli
-```
-
-On ArchLinux from the [AUR](https://aur.archlinux.org/packages/resume-pycli/):
-
-```
-yay -S resume-pycli
-
-# or without yay
-git clone https://aur.archlinux.org/resume-pycli.git
-cd resume-pycli/
-makepkg -si
 ```
 
 ## Usage

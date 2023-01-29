@@ -1,7 +1,0 @@
-{
-  "name": "resumepy",
-  "dockerComposeFile": "docker-compose.yml",
-  "service": "app",
-  "vim-extensions": [],
-  "vim-settings": []
-}

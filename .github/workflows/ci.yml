@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           cache: poetry
-          python-version: 3.8
+          python-version: 3.11
       - run: pipx install poetry
       - run: make setup
       - run: make lint
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           cache: poetry
-          python-version: 3.8
+          python-version: 3.11
       - run: pipx install poetry
       - run: make setup
       - run: make test
@@ -41,7 +41,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           cache: poetry
-          python-version: 3.8
+          python-version: 3.11
       - run: pipx install poetry
       - run: make setup
       - run: make build

@@ -4,7 +4,7 @@ all:
 .PHONY: setup
 ## setup: Install requirements
 setup:
-	poetry install
+	poetry install --no-interaction
 
 .PHONY: chglog
 ## chglog: Generate changelog

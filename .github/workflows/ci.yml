@@ -66,3 +66,5 @@ jobs:
           files: dist/*
       - run: pipx install poetry
       - run: make publish
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.POETRY_PYPI_TOKEN_PYPI }}

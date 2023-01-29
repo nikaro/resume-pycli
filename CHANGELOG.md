@@ -1,5 +1,18 @@
 ## Unreleased
 
+### Build
+
+- python 3.8 minimum version
+- deps: bump jsonschema from 4.4.0 to 4.17.3
+- deps: bump beautifulsoup4 from 4.10.0 to 4.11.1
+- deps: bump jinja2 from 3.0.3 to 3.1.2
+- deps: bump click from 8.0.4 to 8.1.3
+- deps-dev: bump pytest from 7.1.1 to 7.2.1
+
+### Refactor
+
+- replace pdfkit by playwright
+
 
 ## v2.0.0 - 2022-03-24
 

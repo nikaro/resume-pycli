@@ -20,8 +20,14 @@ pdfkit = "*"
 jsonschema = "*"
 beautifulsoup4 = "*"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "*"
+mypy = "*"
+ruff = "*"
+black = "*"
+
+[tool.ruff]
+ignore = ["E501"]
 
 [tool.poetry.scripts]
 resume = 'resume_pycli.script:cli'

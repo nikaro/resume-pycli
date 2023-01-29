@@ -11,15 +11,21 @@ setup:
 chglog:
 	git chglog --sort semver -o CHANGELOG.md
 
-.PHONY: build
-## build: Build package
-build:
-	poetry build
+.PHONY: lint
+## lint: Run lint
+lint:
+	poetry run black --check --diff .
+	poetry run ruff check .
 
 .PHONY: test
 ## test: Run tests
 test:
 	poetry run pytest
+
+.PHONY: build
+## build: Build package
+build:
+	poetry build
 
 .PHONY: publish
 ## publish: Publish on PyPI

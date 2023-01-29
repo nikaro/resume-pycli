@@ -39,7 +39,10 @@ def init(resume) -> None:
     type=click.File(),
 )
 @click.option(
-    "--schema", metavar="PATH", help="Path to a custom schema to validate against.", type=click.File()
+    "--schema",
+    metavar="PATH",
+    help="Path to a custom schema to validate against.",
+    type=click.File(),
 )
 def validate(resume, schema) -> None:
     """Validate resume's schema."""
@@ -54,9 +57,13 @@ def validate(resume, schema) -> None:
 
 
 @click.command()
-@click.option("--bind", default="localhost", metavar="ADDR", help="Specify alternate bind address")
+@click.option(
+    "--bind", default="localhost", metavar="ADDR", help="Specify alternate bind address"
+)
 @click.option("--port", default=4000, metavar="PORT", help="Serve on a custom port.")
-@click.option("--path", default="public", metavar="PATH", help="Serve a custom directory.")
+@click.option(
+    "--path", default="public", metavar="PATH", help="Serve a custom directory."
+)
 @click.option("--silent", is_flag=True, help="Do not open web browser.")
 def serve(bind, port, path, silent) -> None:
     """Serve resume."""
@@ -74,7 +81,9 @@ def serve(bind, port, path, silent) -> None:
     help="Path to the resume in json format.",
     type=click.File(),
 )
-@click.option("--theme", metavar="NAME", help="Specify the to used to build the resume.")
+@click.option(
+    "--theme", metavar="NAME", help="Specify the to used to build the resume."
+)
 @click.option("--pdf", is_flag=True, help="Export to PDF only.")
 @click.option(
     "--pdf-options",
@@ -84,7 +93,9 @@ def serve(bind, port, path, silent) -> None:
     callback=u.cb_pdf_options,
 )
 @click.option("--html", is_flag=True, help="Export to HTML only.")
-@click.option("--output", metavar="PATH", help="Specify the output directory.", default="public")
+@click.option(
+    "--output", metavar="PATH", help="Specify the output directory.", default="public"
+)
 def export(resume, theme, pdf, pdf_options, html, output) -> None:
     """Export to HTML and PDF."""
     resume_file = json.load(resume)

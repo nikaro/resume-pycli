@@ -26,6 +26,7 @@ test:
 ## build: Build package
 build:
 	poetry build
+	cd dist/ ; sha512sum * > sha512sums.txt
 
 .PHONY: publish
 ## publish: Publish on PyPI

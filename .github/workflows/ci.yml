@@ -15,6 +15,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           cache: poetry
+      - run: pipx install poetry
       - run: make setup
       - run: make lint
 
@@ -26,6 +27,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           cache: poetry
+      - run: pipx install poetry
       - run: make setup
       - run: make test
 
@@ -37,6 +39,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           cache: poetry
+      - run: pipx install poetry
       - run: make setup
       - run: make build
       - uses: actions/upload-artifact@v3

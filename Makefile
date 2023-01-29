@@ -15,7 +15,11 @@ chglog:
 ## lint: Run lint
 lint:
 	poetry run black --check --diff .
+ifeq ($(CI), true)
+	poetry run ruff check --format=github .
+else
 	poetry run ruff check .
+endif
 
 .PHONY: test
 ## test: Run tests

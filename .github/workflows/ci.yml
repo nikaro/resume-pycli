@@ -22,7 +22,6 @@ jobs:
       - run: make lint
 
   test:
-    needs: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -35,7 +34,6 @@ jobs:
       - run: make test
 
   build:
-    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

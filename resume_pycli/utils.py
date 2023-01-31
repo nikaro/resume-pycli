@@ -4,6 +4,8 @@ from base64 import b64encode
 from bs4 import BeautifulSoup
 import functools
 from http.server import HTTPServer, SimpleHTTPRequestHandler
+from importlib.resources import as_file
+from importlib.resources import files
 from pathlib import Path
 from shutil import copytree
 import socket
@@ -31,12 +33,12 @@ def validate(resume: dict, schema: dict) -> Optional[str]:
 
 
 def render_html(resume: dict, theme: str) -> str:
-    lib_dir = Path(__file__).parent
+    lib_dir = files("resume_pycli")
     env = Environment(
         loader=FileSystemLoader(
             [
-                str(Path.cwd().joinpath("themes", theme)),
-                str(lib_dir.joinpath("themes", theme)),
+                str(Path.cwd().joinpath("themes").joinpath(theme)),
+                str(lib_dir.joinpath("themes").joinpath(theme)),
             ]
         ),
         autoescape=select_autoescape(["html", "xml"]),
@@ -54,10 +56,13 @@ def export_html(resume: dict, theme: str, output: Path) -> None:
     html = render_html(resume, theme)
     output.joinpath("index.html").write_text(html)
     # find theme directory
-    if (cwd_theme := Path.cwd().joinpath("themes", theme)).is_dir():
+    if (cwd_theme := Path.cwd().joinpath("themes").joinpath(theme)).is_dir():
         theme_dir = cwd_theme
-    elif (lib_theme := Path(__file__).parent.joinpath("themes", theme)).is_dir():
-        theme_dir = lib_theme
+    elif (
+        lib_theme := files("resume_pycli").joinpath("themes").joinpath(theme)
+    ).is_dir():
+        with as_file(lib_theme) as lib_theme_p:
+            theme_dir = lib_theme_p
     else:
         raise Exception("cannot find theme")
     # copy theme assets in output directory

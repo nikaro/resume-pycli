@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from importlib.resources import files
 import json
 from pathlib import Path
 
@@ -21,7 +22,7 @@ def init(
     )
 ) -> None:
     """Initialize a resume.json file."""
-    source = Path(__file__).parent.joinpath("resume.json").read_text()
+    source = files("resume_pycli").joinpath("resume.json").read_text()
     resume.write(source)
     typer.echo("resume.json created")
 
@@ -35,7 +36,7 @@ def validate(
         help="Path to the resume in json format.",
     ),
     schema: Path = typer.Option(
-        Path(__file__).parent.joinpath("schema.json"),
+        files("resume_pycli").joinpath("schema.json"),
         exists=True,
         dir_okay=False,
         help="Path to a custom schema to validate against.",

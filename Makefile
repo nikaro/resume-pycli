@@ -9,7 +9,7 @@ setup:
 .PHONY: chglog
 ## chglog: Generate changelog
 chglog:
-	git chglog --sort semver --next-tag $(TAG) -o CHANGELOG.md
+	git chglog --sort semver $(shell [ -n "$(TAG)" ] && echo "--next-tag $(TAG)") --output CHANGELOG.md
 
 .PHONY: lint
 ## lint: Run lint

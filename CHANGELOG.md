@@ -1,5 +1,14 @@
 ## Unreleased
 
+### Build
+
+- deps-dev: bump ruff from 0.0.237 to 0.0.238
+
+### Refactor
+
+- replace __file__ by importlib.resources
+- replace lib click by typer
+
 
 ## v3.0.1 - 2023-01-29
 

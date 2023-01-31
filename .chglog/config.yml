@@ -2,7 +2,7 @@ style: none
 template: CHANGELOG.tpl.md
 info:
   title: CHANGELOG
-  repository_url: https://git.sr.ht/~nka/resume-pycli
+  repository_url: https://github.com/nikaro/resume-pycli
 options:
   commits:
     filters:

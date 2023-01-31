@@ -2,113 +2,114 @@
 
 import json
 from pathlib import Path
-import sys
 
-import click
+import typer
 
 from resume_pycli import __version__
 from resume_pycli import utils
 
 
-@click.group()
-def cli() -> None:
-    """CLI tool to easily setup a new resume."""
+app = typer.Typer(help="CLI tool to easily setup a new resume.")
 
 
-@click.command()
-@click.option(
-    "--resume",
-    default="resume.json",
-    metavar="PATH",
-    help="Path to the resume in json format.",
-    type=click.File("x"),
-)
-def init(resume) -> None:
+@app.command()
+def init(
+    resume: typer.FileTextWrite = typer.Option(
+        "resume.json",
+        mode="x",
+        help="Path to the resume in json format.",
+    )
+) -> None:
     """Initialize a resume.json file."""
     source = Path(__file__).parent.joinpath("resume.json").read_text()
     resume.write(source)
-    click.echo("resume.json created")
+    typer.echo("resume.json created")
 
 
-@click.command()
-@click.option(
-    "--resume",
-    default="resume.json",
-    metavar="PATH",
-    help="Path to the resume in json format.",
-    type=click.File(),
-)
-@click.option(
-    "--schema",
-    metavar="PATH",
-    help="Path to a custom schema to validate against.",
-    type=click.File(),
-)
-def validate(resume, schema) -> None:
+@app.command()
+def validate(
+    resume: Path = typer.Option(
+        Path("resume.json"),
+        exists=True,
+        dir_okay=False,
+        help="Path to the resume in json format.",
+    ),
+    schema: Path = typer.Option(
+        Path(__file__).parent.joinpath("schema.json"),
+        exists=True,
+        dir_okay=False,
+        help="Path to a custom schema to validate against.",
+    ),
+) -> None:
     """Validate resume's schema."""
-    resume_file = json.load(resume)
-    if not schema:
-        schema = Path(__file__).parent.joinpath("schema.json").open()
-    schema_file = json.load(schema)
+    resume_file = json.loads(resume.read_text())
+    schema_file = json.loads(schema.read_text())
     err = utils.validate(resume_file, schema_file)
     if err:
-        click.echo(err, err=True)
-        sys.exit(1)
+        typer.echo(err, err=True)
+        raise typer.Exit(code=1)
 
 
-@click.command()
-@click.option(
-    "--bind", default="localhost", metavar="ADDR", help="Specify alternate bind address"
-)
-@click.option("--port", default=4000, metavar="PORT", help="Serve on a custom port.")
-@click.option(
-    "--path", default="public", metavar="PATH", help="Serve a custom directory."
-)
-@click.option("--silent", is_flag=True, help="Do not open web browser.")
-def serve(bind, port, path, silent) -> None:
+@app.command()
+def serve(
+    host: str = typer.Option(
+        "localhost",
+        help="Specify alternate bind address",
+    ),
+    port: int = typer.Option(
+        4000,
+        help="Serve on a custom port.",
+    ),
+    path: Path = typer.Option(
+        Path("public"),
+        exists=True,
+        file_okay=False,
+        help="Serve a custom directory.",
+    ),
+    silent: bool = typer.Option(False, help="Do not open web browser."),
+) -> None:
     """Serve resume."""
-    click.echo(f"Serving on http://{bind}:{port}/ ...")
+    typer.echo(f"Serving on http://{host}:{port}/ ...")
     if not silent:
-        click.launch(f"http://{bind}:{port}/")
-    utils.serve(bind, port, path, silent)
+        typer.launch(f"http://{host}:{port}/")
+    utils.serve(host, port, path, silent)
 
 
-@click.command()
-@click.option(
-    "--resume",
-    default="resume.json",
-    metavar="PATH",
-    help="Path to the resume in json format.",
-    type=click.File(),
-)
-@click.option(
-    "--theme", metavar="NAME", help="Specify the to used to build the resume."
-)
-@click.option("--pdf", is_flag=True, help="Export to PDF only.")
-@click.option("--html", is_flag=True, help="Export to HTML only.")
-@click.option(
-    "--output", metavar="PATH", help="Specify the output directory.", default="public"
-)
-def export(resume, theme, pdf, html, output) -> None:
+@app.command()
+def export(
+    resume: Path = typer.Option(
+        Path("resume.json"),
+        help="Path to the resume in json format.",
+    ),
+    theme: str = typer.Option(
+        "",
+        help="Specify the to used to build the resume.",
+    ),
+    pdf: bool = typer.Option(
+        True,
+        help="Export to PDF.",
+    ),
+    html: bool = typer.Option(
+        True,
+        help="Export to HTML.",
+    ),
+    output: Path = typer.Option(
+        "public",
+        help="Specify the output directory.",
+    ),
+) -> None:
     """Export to HTML and PDF."""
-    resume_file = json.load(resume)
+    resume_file = json.loads(resume.read_text())
     if not theme:
         theme = resume_file["meta"].get("theme", "base")
-    Path("public").mkdir(parents=True, exist_ok=True)
-    if html or not pdf:
+    output.mkdir(parents=True, exist_ok=True)
+    if html:
         utils.export_html(resume_file, theme, output)
-    if pdf or not html:
+    if pdf:
         utils.export_pdf(resume_file, theme, output)
 
 
-@click.command()
+@app.command()
 def version() -> None:
     """Show application version."""
-    click.echo(__version__)
-
-
-cli.add_command(version)
-cli.add_command(init)
-cli.add_command(validate)
-cli.add_command(export)
-cli.add_command(serve)
+    typer.echo(__version__)

@@ -10,6 +10,7 @@ import socket
 import subprocess
 from tempfile import TemporaryDirectory
 import threading
+from typing import Optional
 
 from jinja2 import (
     Environment,
@@ -20,13 +21,13 @@ import jsonschema
 from playwright.sync_api import sync_playwright
 
 
-def validate(resume: dict, schema: dict) -> str:
+def validate(resume: dict, schema: dict) -> Optional[str]:
     try:
         jsonschema.validate(instance=resume, schema=schema)
     except jsonschema.ValidationError as err:
         return err.message
-    else:
-        return ""
+
+    return None
 
 
 def render_html(resume: dict, theme: str) -> str:
@@ -46,12 +47,12 @@ def render_html(resume: dict, theme: str) -> str:
     return html
 
 
-def export_html(resume: dict, theme: str, output: str) -> None:
+def export_html(resume: dict, theme: str, output: Path) -> None:
     if "image" in resume["basics"] and resume["basics"]["image"]:
         with open(resume["basics"]["image"], "rb") as image_file:
             resume["basics"]["image_b64"] = b64encode(image_file.read()).decode()
     html = render_html(resume, theme)
-    Path(output, "index.html").write_text(html)
+    output.joinpath("index.html").write_text(html)
     # find theme directory
     if (cwd_theme := Path.cwd().joinpath("themes", theme)).is_dir():
         theme_dir = cwd_theme
@@ -71,11 +72,11 @@ def export_html(resume: dict, theme: str, output: str) -> None:
         for script in soup.find_all("script")
         if script.get("src").startswith("/")
     ]
-    assets = set(assets)
-    for asset in assets:
+    assets_uniq = set(assets)
+    for asset in assets_uniq:
         copytree(
             Path.joinpath(theme_dir, asset),
-            Path(output).joinpath(asset),
+            output.joinpath(asset),
             dirs_exist_ok=True,
         )
 
@@ -85,10 +86,10 @@ def check_port(port: int) -> bool:
         return s.connect_ex(("localhost", port)) == 0
 
 
-def export_pdf(resume: dict, theme: str, output: str) -> None:
+def export_pdf(resume: dict, theme: str, output: Path) -> None:
     # export html in a random temporary directory
     tmpdir = TemporaryDirectory()
-    export_html(resume, theme, tmpdir.name)
+    export_html(resume, theme, Path(tmpdir.name))
     # increment port if already in use
     port = 4001
     while check_port(port):
@@ -105,7 +106,7 @@ def export_pdf(resume: dict, theme: str, output: str) -> None:
         browser = chromium.launch()
         page = browser.new_page()
         page.goto(url=f"http://localhost:{port}")
-        page.pdf(path=str(Path(output, "index.pdf")), format="A4")
+        page.pdf(path=str(output.joinpath("index.pdf")), format="A4")
         browser.close()
 
 
@@ -114,7 +115,7 @@ class SilentHandler(SimpleHTTPRequestHandler):
         pass
 
 
-def serve(address: str, port: int, path: str, silent: bool) -> None:
+def serve(address: str, port: int, path: Path, silent: bool) -> None:
     server_address = (address, port)
     handler = SilentHandler if silent else SimpleHTTPRequestHandler
     resume_handler = functools.partial(handler, directory=path)

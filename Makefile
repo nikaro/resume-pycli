@@ -20,6 +20,7 @@ ifeq ($(CI), true)
 else
 	poetry run ruff check .
 endif
+	poetry run mypy .
 
 .PHONY: test
 ## test: Run tests

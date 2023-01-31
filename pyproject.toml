@@ -14,7 +14,7 @@ include = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-click = "*"
+typer = {extras = ["all"], version = "*"}
 Jinja2 = "*"
 jsonschema = "*"
 beautifulsoup4 = "*"
@@ -26,13 +26,15 @@ pytest = "*"
 mypy = "*"
 ruff = "*"
 black = "*"
+types-beautifulsoup4 = "*"
+types-jsonschema = "*"
 
 [tool.ruff]
 ignore = ["E501"]
 
 [tool.poetry.scripts]
-resume = 'resume_pycli.script:cli'
-resumepy = 'resume_pycli.script:cli'
+resume = "resume_pycli.script:app"
+resumepy = "resume_pycli.script:app"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

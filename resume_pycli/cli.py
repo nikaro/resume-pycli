@@ -1,13 +1,13 @@
-#!/usr/bin/env python3
-
 from importlib.resources import files
 import json
 from pathlib import Path
 
 import typer
 
-from resume_pycli import __version__
-from resume_pycli import utils
+from . import __version__
+from . import utils
+from . import pdf
+from . import html
 
 
 app = typer.Typer(help="CLI tool to easily setup a new resume.")
@@ -86,12 +86,16 @@ def export(
         "",
         help="Specify the to used to build the resume.",
     ),
-    pdf: bool = typer.Option(
+    to_pdf: bool = typer.Option(
         True,
+        "--pdf",
+        "--no-pdf",
         help="Export to PDF.",
     ),
-    html: bool = typer.Option(
+    to_html: bool = typer.Option(
         True,
+        "--html",
+        "--no-html",
         help="Export to HTML.",
     ),
     output: Path = typer.Option(
@@ -104,10 +108,10 @@ def export(
     if not theme:
         theme = resume_file["meta"].get("theme", "base")
     output.mkdir(parents=True, exist_ok=True)
-    if html:
-        utils.export_html(resume_file, theme, output)
-    if pdf:
-        utils.export_pdf(resume_file, theme, output)
+    if to_html:
+        html.export(resume_file, theme, output)
+    if to_pdf:
+        pdf.export(resume_file, theme, output)
 
 
 @app.command()

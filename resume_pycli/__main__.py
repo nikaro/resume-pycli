@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
 
-from resume_pycli.script import app
+from . import cli
 
-app(prog_name="python -m resume_pycli")
+cli.app(prog_name="python -m resume_pycli")

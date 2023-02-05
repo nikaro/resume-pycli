@@ -42,6 +42,7 @@ publish:
 ## clean: Remove builds and cache
 clean:
 	rm -rf dist/
+	rm -rf public/
 	rm -rf src/resume_pycli/__pycache__/
 
 .PHONY: help

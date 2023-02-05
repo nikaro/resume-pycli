@@ -33,8 +33,8 @@ types-jsonschema = "*"
 ignore = ["E501"]
 
 [tool.poetry.scripts]
-resume = "resume_pycli.script:app"
-resumepy = "resume_pycli.script:app"
+resume = "resume_pycli.cli:app"
+resumepy = "resume_pycli.cli:app"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

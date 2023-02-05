@@ -6,7 +6,7 @@ from shutil import copytree
 import tomli
 
 import resume_pycli
-from resume_pycli.script import app
+from resume_pycli.cli import app
 
 
 def test_version():

@@ -9,7 +9,7 @@ from . import html
 from . import utils
 
 
-def export(resume: dict, theme: str, output: Path) -> None:
+def export(resume: dict, theme: Path, output: Path) -> None:
     # export html in a random temporary directory
     tmpdir = TemporaryDirectory()
     html.export(resume, theme, Path(tmpdir.name))
@@ -19,7 +19,7 @@ def export(resume: dict, theme: str, output: Path) -> None:
         port += 1
     # run server in background
     daemon = threading.Thread(
-        target=utils.serve, args=("localhost", port, tmpdir.name, True), daemon=True
+        target=html.serve, args=("localhost", port, False, resume, theme), daemon=True
     )
     daemon.start()
     with sync_playwright() as p:

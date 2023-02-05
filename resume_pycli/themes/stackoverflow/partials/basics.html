@@ -1,6 +1,6 @@
  {% if basics %}
 	<header id="header" class="clear">
-		{% if basics.image %}
+		{% if basics.image_b64 %}
 		<img class="image" src="data:image/jpeg;base64,{{ basics.image_b64 | safe }}" alt="{{ basics.name }}" />
 		<div class="middle">
 			<h1 class="name">{{ basics.name }}</h1>

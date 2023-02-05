@@ -1,5 +1,5 @@
-from http.server import HTTPServer, SimpleHTTPRequestHandler
-import functools
+from importlib.resources import as_file
+from importlib.resources import files
 from pathlib import Path
 import socket
 from typing import Optional
@@ -21,14 +21,15 @@ def check_port(port: int) -> bool:
         return s.connect_ex(("localhost", port)) == 0
 
 
-class SilentHandler(SimpleHTTPRequestHandler):
-    def log_message(self, *_):
-        pass
-
-
-def serve(address: str, port: int, path: Path, silent: bool) -> None:
-    server_address = (address, port)
-    handler = SilentHandler if silent else SimpleHTTPRequestHandler
-    resume_handler = functools.partial(handler, directory=path)
-    httpd = HTTPServer(server_address, resume_handler)
-    httpd.serve_forever()
+def find_theme(name: str) -> Path:
+    """Find theme directory either in current directory or in package directory."""
+    cwd_theme = Path.cwd().joinpath("themes").joinpath(name)
+    lib_theme = files("resume_pycli").joinpath("themes").joinpath(name)
+    if cwd_theme.is_dir():
+        return cwd_theme
+    elif lib_theme.is_dir():
+        with as_file(lib_theme) as lib_theme_p:
+            print(f"{lib_theme_p:}")
+            return lib_theme_p
+    else:
+        raise Exception("cannot find theme")

@@ -15,13 +15,12 @@ include = [
 [tool.poetry.dependencies]
 python = "^3.9"
 typer = {extras = ["all"], version = "*"}
-Jinja2 = "*"
 jsonschema = "*"
 beautifulsoup4 = "*"
 playwright = "*"
+flask = "^2.2.2"
 
 [tool.poetry.group.dev.dependencies]
-tomli = "*"
 pytest = "*"
 mypy = "*"
 ruff = "*"

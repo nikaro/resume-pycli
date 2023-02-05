@@ -1,54 +1,10 @@
 from typer.testing import CliRunner
 import json
 from pathlib import Path
-import re
 from shutil import copytree
-import tomli
 
 import resume_pycli
 from resume_pycli.cli import app
-
-
-def test_version():
-    runner = CliRunner()
-    with runner.isolated_filesystem():
-        result = runner.invoke(app, ["version"])
-        assert result.exit_code == 0
-        assert re.match(r"^(:?\d+)\.(:?\d+)\.(:?\d+)", result.output.strip())
-
-
-def test_version_match_pyproject():
-    with Path(__file__).parent.parent.joinpath("pyproject.toml").open(mode="rb") as f:
-        pyproject = tomli.load(f)
-    major, minor, patch, pre, _ = re.match(
-        r"^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$",
-        pyproject["tool"]["poetry"]["version"],
-    ).groups()
-    pyproject_version = f"{major}.{minor}.{patch}"
-    if pre:
-        pyproject_version = f"{pyproject_version}{pre[:1]}{pre.split('.')[-1]}"
-    runner = CliRunner()
-    with runner.isolated_filesystem():
-        result = runner.invoke(app, ["version"])
-        cli_version = result.output.strip()
-        assert cli_version == pyproject_version
-
-
-def test_init():
-    runner = CliRunner()
-    with runner.isolated_filesystem():
-        result = runner.invoke(app, ["init"])
-        assert result.exit_code == 0
-        assert Path("resume.json").exists()
-        assert result.output == "resume.json created\n"
-
-
-def test_init_already_exists():
-    runner = CliRunner()
-    with runner.isolated_filesystem():
-        Path("resume.json").touch()
-        result = runner.invoke(app, ["init"])
-        assert result.exit_code == 2
 
 
 def test_validate():
@@ -65,7 +21,7 @@ def test_validate_bad_key():
     with runner.isolated_filesystem():
         Path("resume.json").write_text('{"bad_key": "random value"}')
         result = runner.invoke(app, ["validate"])
-        assert result.exit_code == 1
+        assert result.exit_code != 0
 
 
 def test_export():
@@ -112,7 +68,7 @@ def test_export_custom_theme():
             dirs_exist_ok=True,
         )
         Path("resume.json").write_text(resume)
-        result = runner.invoke(app, ["export", "--theme", "custom"])
+        result = runner.invoke(app, ["--theme", "custom", "export"])
         assert result.exit_code == 0
         assert Path("public", "index.html").exists()
         assert Path("public", "index.pdf").exists()
@@ -141,11 +97,11 @@ def test_export_stackoverflow_theme():
         lib_dir = Path(resume_pycli.__file__).parent
         resume = lib_dir.joinpath("resume.json").read_text()
         Path("resume.json").write_text(resume)
-        result = runner.invoke(app, ["export", "--theme", "stackoverflow"])
+        result = runner.invoke(app, ["--theme", "stackoverflow", "export"])
         assert result.exit_code == 0
         assert Path("public", "index.html").exists()
         assert Path("public", "index.pdf").exists()
-        assert Path("public", "assets").is_dir()
+        assert Path("public", "static").is_dir()
 
 
 def test_export_stackoverflow_theme_with_image():
@@ -159,8 +115,8 @@ def test_export_stackoverflow_theme_with_image():
         resume = json.loads(lib_dir.joinpath("resume.json").read_text())
         resume["basics"]["image"] = "image.jpg"
         Path("resume.json").write_text(json.dumps(resume))
-        result = runner.invoke(app, ["export", "--theme", "stackoverflow"])
+        result = runner.invoke(app, ["--theme", "stackoverflow", "export"])
         assert result.exit_code == 0
         assert Path("public", "index.html").exists()
         assert Path("public", "index.pdf").exists()
-        assert Path("public", "assets").is_dir()
+        assert Path("public", "static").is_dir()

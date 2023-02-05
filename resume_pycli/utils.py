@@ -2,9 +2,12 @@ from importlib.resources import as_file
 from importlib.resources import files
 from pathlib import Path
 import socket
+import threading
 from typing import Optional
 
 import jsonschema
+
+from .html import serve
 
 
 def validate(resume: dict, schema: dict) -> Optional[str]:
@@ -29,7 +32,20 @@ def find_theme(name: str) -> Path:
         return cwd_theme
     elif lib_theme.is_dir():
         with as_file(lib_theme) as lib_theme_p:
-            print(f"{lib_theme_p:}")
             return lib_theme_p
     else:
         raise Exception("cannot find theme")
+
+
+def serve_bg(*, resume: dict, theme: Path) -> int:
+    port = 4001
+    while check_port(port):
+        port += 1
+    # run server in background
+    daemon = threading.Thread(
+        target=serve,
+        kwargs={"resume": resume, "theme": theme, "port": port},
+        daemon=True,
+    )
+    daemon.start()
+    return port

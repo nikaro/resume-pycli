@@ -75,7 +75,13 @@ def serve(
     """Serve resume."""
     if browser:
         typer.launch(f"http://{host}:{port}/")
-    html.serve(host, port, debug, Options.resume, Options.theme)
+    html.serve(
+        resume=Options.resume,
+        theme=Options.theme,
+        host=host,
+        port=port,
+        debug=debug,
+    )
 
 
 @app.command()
@@ -85,6 +91,10 @@ def export(
         "--pdf",
         "--no-pdf",
         help="Export to PDF.",
+    ),
+    pdf_backend: pdf.Backend = typer.Option(
+        "playwright",
+        help="Select PDF engine.",
     ),
     to_html: bool = typer.Option(
         True,
@@ -100,6 +110,15 @@ def export(
     """Export to HTML and PDF."""
     output.mkdir(parents=True, exist_ok=True)
     if to_html:
-        html.export(Options.resume, Options.theme, output)
+        html.export(
+            resume=Options.resume,
+            theme=Options.theme,
+            output=output,
+        )
     if to_pdf:
-        pdf.export(Options.resume, Options.theme, output)
+        pdf.export(
+            resume=Options.resume,
+            theme=Options.theme,
+            output=output,
+            engine=pdf_backend,
+        )

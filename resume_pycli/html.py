@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from shutil import copytree
 
@@ -7,8 +6,6 @@ from flask import render_template
 
 
 def export(resume: dict, theme: Path, output: Path) -> None:
-    # enable playwright debug output
-    os.environ["DEBUG"] = "pw:api"
     # render resume to html
     app = Flask(
         import_name="resume_pycli",
@@ -24,7 +21,14 @@ def export(resume: dict, theme: Path, output: Path) -> None:
     output.joinpath("index.html").write_text(html)
 
 
-def serve(host: str, port: int, debug: bool, resume: dict, theme: Path) -> None:
+def serve(
+    *,
+    resume: dict,
+    theme: Path,
+    host: str = "localhost",
+    port: int = 4000,
+    debug: bool = False,
+) -> None:
     app = Flask(
         import_name="resume_pycli",
         template_folder=f"{theme}",

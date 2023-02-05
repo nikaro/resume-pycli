@@ -120,3 +120,27 @@ def test_export_stackoverflow_theme_with_image():
         assert Path("public", "index.html").exists()
         assert Path("public", "index.pdf").exists()
         assert Path("public", "static").is_dir()
+
+
+def test_export_pdf_backend_playwright():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        resume = Path(resume_pycli.__file__).parent.joinpath("resume.json").read_text()
+        Path("resume.json").write_text(resume)
+        result = runner.invoke(
+            app, ["export", "--no-html", "--pdf-backend", "playwright"]
+        )
+        assert result.exit_code == 0
+        assert Path("public", "index.pdf").exists()
+
+
+def test_export_pdf_backend_weasyprint():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        resume = Path(resume_pycli.__file__).parent.joinpath("resume.json").read_text()
+        Path("resume.json").write_text(resume)
+        result = runner.invoke(
+            app, ["export", "--no-html", "--pdf-backend", "weasyprint"]
+        )
+        assert result.exit_code == 0
+        assert Path("public", "index.pdf").exists()

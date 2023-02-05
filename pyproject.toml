@@ -14,11 +14,12 @@ include = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
-typer = {extras = ["all"], version = "*"}
+typer = { extras = ["all"], version = "*" }
 jsonschema = "*"
 beautifulsoup4 = "*"
-playwright = "*"
-flask = "^2.2.2"
+flask = "*"
+playwright = { version = "*", optional = true }
+weasyprint = { version = "*", optional = true }
 
 [tool.poetry.group.dev.dependencies]
 pytest = "*"
@@ -27,6 +28,10 @@ ruff = "*"
 black = "*"
 types-beautifulsoup4 = "*"
 types-jsonschema = "*"
+
+[tool.poetry.extras]
+playwright = ["playwright"]
+weasyprint = ["weasyprint"]
 
 [tool.ruff]
 ignore = ["E501"]

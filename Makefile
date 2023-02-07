@@ -14,6 +14,8 @@ chglog:
 .PHONY: lint
 ## lint: Run lint
 lint:
+	poetry check --no-interaction
+	poetry lock --check --no-interaction
 	poetry run black --check --diff .
 ifeq ($(CI), true)
 	poetry run ruff check --format=github .

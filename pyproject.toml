@@ -28,6 +28,7 @@ ruff = "*"
 black = "*"
 types-beautifulsoup4 = "*"
 types-jsonschema = "*"
+pytest-mock = "*"
 
 [tool.poetry.extras]
 playwright = ["playwright"]

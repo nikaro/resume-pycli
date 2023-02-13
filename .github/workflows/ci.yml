@@ -25,7 +25,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: sudo apt install --no-install-recommends --yes libpango-1.0-0 libharfbuzz0b libpangoft2-1.0-0
       - run: pipx install poetry
       - uses: actions/setup-python@v4
         with:

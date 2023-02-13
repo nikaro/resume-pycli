@@ -134,7 +134,12 @@ def test_export_pdf_backend_playwright():
         assert Path("public", "index.pdf").exists()
 
 
-def test_export_pdf_backend_weasyprint():
+def fake_pdf(*args, **kwargs):
+    Path("public/index.pdf").write_bytes(b"")
+
+
+def test_export_pdf_backend_weasyprint(mocker):
+    mocker.patch("resume_pycli.pdf.export_weasyprint", wraps=fake_pdf)
     runner = CliRunner()
     with runner.isolated_filesystem():
         resume = Path(resume_pycli.__file__).parent.joinpath("resume.json").read_text()

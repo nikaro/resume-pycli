@@ -1,7 +1,30 @@
 ## Unreleased
 
 
-## v4.0.0 - 2023-01-31
+## v4.1.0 - 2023-02-13
+
+### Build
+
+- deps-dev: bump ruff from 0.0.244 to 0.0.246
+- deps-dev: bump ruff from 0.0.243 to 0.0.244
+- deps-dev: bump ruff from 0.0.241 to 0.0.243
+- deps-dev: bump types-jsonschema from 4.17.0.3 to 4.17.0.4
+- deps-dev: bump ruff from 0.0.239 to 0.0.241
+- deps-dev: bump black from 22.12.0 to 23.1.0
+- deps-dev: bump ruff from 0.0.238 to 0.0.239
+- deps-dev: bump types-beautifulsoup4 from 4.11.6.4 to 4.11.6.5
+
+### Features
+
+- pdf: add multiple pdf engine choices
+
+### Refactor
+
+- split utils to pdf and html libs
+- html: export and serve content through flask
+
+
+## v4.0.0 - 2023-02-01
 
 ### Build
 

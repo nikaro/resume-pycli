@@ -1,6 +1,15 @@
 ## Unreleased
 
 
+## v4.1.1 - 2023-02-15
+
+### Build
+
+- deps: bump werkzeug from 2.2.2 to 2.2.3 ([#21](https://github.com/nikaro/resume-pycli/issues/21))
+- deps-dev: bump types-beautifulsoup4 from 4.11.6.5 to 4.11.6.6 ([#20](https://github.com/nikaro/resume-pycli/issues/20))
+- deps-dev: bump types-jsonschema from 4.17.0.4 to 4.17.0.5 ([#19](https://github.com/nikaro/resume-pycli/issues/19))
+
+
 ## v4.1.0 - 2023-02-13
 
 ### Build

@@ -1,0 +1,42 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: local
+    hooks:
+      - id: poetry-check
+        name: Check pyproject.toml validity
+        language: system
+        pass_filenames: false
+        files: poetry.lock|pyproject.toml
+        entry: poetry check --no-interaction
+      - id: poetry-lock-check
+        name: Check poetry.lock validity
+        language: system
+        pass_filenames: false
+        files: poetry.lock|pyproject.toml
+        entry: poetry lock --check --no-interaction
+      - id: black
+        name: Check Python format
+        language: system
+        types: [python]
+        entry: poetry run black --check --diff
+      - id: ruff
+        name: Check Python style
+        language: system
+        types: [python]
+        entry: poetry run ruff check
+      - id: mypy
+        name: Check Python typing
+        language: system
+        types: [python]
+        entry: poetry run mypy

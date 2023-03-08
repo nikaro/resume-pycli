@@ -1,5 +1,7 @@
 # resume-pycli
 
+> :warning: Unmaintained project, replaced by [GoResume](https://github.com/nikaro/goresume), still perfectly usable so feel free to fork.
+
 CLI tool to build a beautiful resume from a [JSON
 Resume](https://jsonresume.org/) file.
 
